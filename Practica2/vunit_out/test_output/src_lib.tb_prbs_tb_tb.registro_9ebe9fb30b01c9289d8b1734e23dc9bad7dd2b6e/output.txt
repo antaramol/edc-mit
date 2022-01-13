@@ -1,0 +1,2 @@
+               0 fs - default              -    INFO - Prueba de generación del registro
+simulation stopped @845ns with status 0

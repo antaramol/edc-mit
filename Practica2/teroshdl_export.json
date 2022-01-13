@@ -1,0 +1,240 @@
+{
+    "export_format_version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0
+    },
+    "files": [
+        {
+            "file_name": "/home/salas/edc-practicas/practica2/prbs.vhd",
+            "library_name": "src_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/string_ops/src/string_ops.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/path/src/path.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/print_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/location_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/location_pkg-body-2008m.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/types.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/codec_builder.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/codec_builder-2008p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/codec.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/codec-2008p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/api/external_string_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/string_ptr_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/ansi_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_levels_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/string_ptr_pkg-body-2002p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/byte_vector_ptr_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/api/external_integer_vector_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_vector_ptr_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_handler_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/print_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/logger_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/dictionary/src/dictionary.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_types.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/file_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_handler_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_vector_ptr_pkg-body-2002p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_array_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/string_ptr_pool_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pkg-2008p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_vector_ptr_pool_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/runner_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_api.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pool_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_array_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/dict_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/data_types_context.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/core/src/stop_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/core/src/core_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/logger_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_levels_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_deprecated_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/checker_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_deprecated_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_run_context.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/checker_pkg-body.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check_api.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check_deprecated_pkg.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_context.vhd",
+            "library_name": "vunit_lib"
+        },
+        {
+            "file_name": "/home/salas/edc-practicas/practica2/tb_prbs.vhd",
+            "library_name": "src_lib"
+        },
+        {
+            "file_name": "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check.vhd",
+            "library_name": "vunit_lib"
+        }
+    ],
+    "tests": [
+        {
+            "attributes": {},
+            "location": {
+                "file_name": "/home/salas/edc-practicas/practica2/tb_prbs.vhd",
+                "length": 8,
+                "offset": 1246
+            },
+            "name": "src_lib.tb_prbs.registro"
+        }
+    ]
+}
