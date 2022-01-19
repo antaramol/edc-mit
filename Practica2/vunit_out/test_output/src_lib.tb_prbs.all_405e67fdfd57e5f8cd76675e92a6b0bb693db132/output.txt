@@ -1,2 +1,0 @@
-/home/salas/edc-practicas/practica2/tb_prbs.vhd:13:5:@0ms:(report note): Hello world!
-simulation stopped @0ms with status 0

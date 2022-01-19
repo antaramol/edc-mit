@@ -1,4 +1,0 @@
-/home/salas/edc-practicas/practica2/tb_example_many.vhd:20:9:@0ms:(assertion error): It fails
-/home/salas/edc-practicas/practica2/vunit_out/test_output/src_lib.tb_example_many.test_fail_1b389f8392980c553a0817f7411a1d031560d2e9/ghdl/tb_example_many-tb:error: assertion failed
-in process .tb_example_many(tb).main
-/home/salas/edc-practicas/practica2/vunit_out/test_output/src_lib.tb_example_many.test_fail_1b389f8392980c553a0817f7411a1d031560d2e9/ghdl/tb_example_many-tb:error: simulation failed

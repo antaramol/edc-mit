@@ -1,2 +1,0 @@
-               0 fs - default              -    INFO - Hello world test_alive
-simulation stopped @500ns with status 0
