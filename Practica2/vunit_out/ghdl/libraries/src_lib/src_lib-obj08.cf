@@ -1,7 +1,0 @@
-v 4
-file / "/home/salas/antaramol/Practica2/tb_prbs.vhd" "0abfde59ddc085af4e9cbff0773799a6b2ab15a9" "20220119004907.167":
-  entity tb_prbs at 1( 0) + 0 on 13;
-  architecture bench of tb_prbs at 14( 198) + 0 on 14;
-file / "/home/salas/antaramol/Practica2/prbs.vhd" "b74351c4ec9dd8cadc1df4d4af62d20c268a51ff" "20220119004900.500":
-  entity prbs at 1( 0) + 0 on 11;
-  architecture prbs_arch of prbs at 16( 293) + 0 on 12;
