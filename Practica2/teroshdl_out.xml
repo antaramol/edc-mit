@@ -1,3 +1,3 @@
-<testsuite name="testsuite" errors="0" failures="0" skipped="0" tests="1" hostname="linux"><testcase classname="src_lib.tb_prbs" name="registro" time="36.2"><system-out>               0 fs - default              -    INFO - Prueba de generación del registro
+<testsuite name="testsuite" errors="0" failures="0" skipped="0" tests="1" hostname="linux"><testcase classname="src_lib.tb_prbs" name="registro" time="22.9"><system-out>               0 fs - default              -    INFO - Prueba de generación del registro
 simulation stopped @845ns with status 0
 </system-out></testcase></testsuite>

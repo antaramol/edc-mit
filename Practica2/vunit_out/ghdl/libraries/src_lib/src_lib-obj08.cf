@@ -1,10 +1,10 @@
 v 4
+file / "/home/salas/antaramol/Practica2/prbs.vhd" "b74351c4ec9dd8cadc1df4d4af62d20c268a51ff" "20220119003359.718":
+  entity prbs at 1( 0) + 0 on 25;
+  architecture prbs_arch of prbs at 16( 293) + 0 on 26;
 file / "/home/salas/edc-practicas/practica2/tb_example_many.vhd" "9f2e0b5b08f9971a6bf309e66747f23d116ea4e6" "20220112105941.823":
   entity tb_example_many at 1( 0) + 0 on 15;
   architecture tb of tb_example_many at 8( 125) + 0 on 16;
-file / "/home/salas/edc-practicas/practica2/prbs.vhd" "b74351c4ec9dd8cadc1df4d4af62d20c268a51ff" "20220112103111.393":
-  entity prbs at 1( 0) + 0 on 11;
-  architecture prbs_arch of prbs at 16( 293) + 0 on 12;
-file / "/home/salas/edc-practicas/practica2/tb_prbs.vhd" "0d9257918b98d09287fb8dfa312f6bf3a57f4fe9" "20220112154538.106":
-  entity tb_prbs at 1( 0) + 0 on 23;
-  architecture bench of tb_prbs at 14( 200) + 0 on 24;
+file / "/home/salas/antaramol/Practica2/tb_prbs.vhd" "06b0674e3669c0544a0dcd095fae07c12b4c9649" "20220119003625.846":
+  entity tb_prbs at 1( 0) + 0 on 29;
+  architecture bench of tb_prbs at 12( 180) + 0 on 30;

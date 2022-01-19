@@ -1,19 +1,19 @@
 v 4
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check.vhd" "1a3f17716aa10fb6cadab15c7064c0886a64400b" "20220112103116.872":
-  package body check_pkg at 9( 346) + 0 on 86;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check.vhd" "1a3f17716aa10fb6cadab15c7064c0886a64400b" "20220119003403.536":
+  package body check_pkg at 9( 346) + 0 on 103;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check_deprecated_pkg.vhd" "c68926e92d90b4f11b5cf935dfe2baab7d9131ea" "20220112103116.655":
   package check_deprecated_pkg at 7( 277) + 0 on 83 body;
   package body check_deprecated_pkg at 84( 3565) + 0 on 84;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/checker_pkg-body.vhd" "72f48d24d66de6a4dedf658ce85e4a4deae9ab41" "20220112103116.528":
   package body checker_pkg at 10( 351) + 0 on 81;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_deprecated_pkg.vhd" "8de853acccc94079fd55885617a8604bfe6a5adb" "20220112103116.442":
-  package run_deprecated_pkg at 7( 277) + 0 on 78 body;
-  package body run_deprecated_pkg at 22( 673) + 0 on 79;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_deprecated_pkg.vhd" "8de853acccc94079fd55885617a8604bfe6a5adb" "20220119003402.686":
+  package run_deprecated_pkg at 7( 277) + 0 on 99 body;
+  package body run_deprecated_pkg at 22( 673) + 0 on 100;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_deprecated_pkg.vhd" "076fb5b91590ab169dc76863c26078c9f32f6111" "20220112103116.317":
   package log_deprecated_pkg at 7( 277) + 0 on 75 body;
   package body log_deprecated_pkg at 63( 2716) + 0 on 76;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/logger_pkg-body.vhd" "ed29fd42802d0f08664380e4e47ae588bd2021f3" "20220112103115.892":
-  package body logger_pkg at 7( 277) + 0 on 73;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/logger_pkg-body.vhd" "ed29fd42802d0f08664380e4e47ae588bd2021f3" "20220119003401.989":
+  package body logger_pkg at 7( 277) + 0 on 98;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/core/src/core_pkg.vhd" "43dd3f14e035f3c0fe85aa561d8eeea3f435f4e0" "20220112103115.648":
   package core_pkg at 7( 277) + 0 on 70 body;
   package body core_pkg at 27( 823) + 0 on 71;
@@ -25,9 +25,9 @@ file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pool_pkg.vhd" "6e2d27d00915ce25bc0fb462d047b79321ef7062" "20220112103115.162":
   package queue_pool_pkg at 7( 277) + 0 on 62 body;
   package body queue_pool_pkg at 33( 896) + 0 on 63;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/runner_pkg.vhd" "5c847e5d3d67fd60fb5bb004d61243ea7fbd7365" "20220112103114.986":
-  package runner_pkg at 9( 340) + 0 on 59 body;
-  package body runner_pkg at 129( 4609) + 0 on 60;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/runner_pkg.vhd" "5c847e5d3d67fd60fb5bb004d61243ea7fbd7365" "20220119003400.867":
+  package runner_pkg at 9( 340) + 0 on 94 body;
+  package body runner_pkg at 129( 4609) + 0 on 95;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/queue_pkg-2008p.vhd" "00a5c36c9a968ef620afe6ae394aeeca13878fb2" "20220112103114.872":
   package queue_2008p_pkg at 7( 277) + 0 on 55 body;
   package body queue_2008p_pkg at 101( 2205) + 0 on 56;
@@ -36,11 +36,11 @@ file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src
   package body string_ptr_pool_pkg at 38( 969) + 0 on 53;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_array_pkg.vhd" "2258b0d307a841a802a311dbde6905210304cd38" "20220112103114.535":
   package integer_array_pkg at 7( 277) + 0 on 50 body;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_handler_pkg-body.vhd" "8980f65a68d94d8115b1e030f74bf9942fb08fa8" "20220112103114.255":
-  package body log_handler_pkg at 7( 277) + 0 on 48;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_types.vhd" "c8eb96b82d0ccc561c079aba12b51ae910168263" "20220112103114.117":
-  package run_types_pkg at 9( 357) + 0 on 44;
-  package body run_types_pkg at 53( 1934) + 0 on 45;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_handler_pkg-body.vhd" "8980f65a68d94d8115b1e030f74bf9942fb08fa8" "20220119003400.491":
+  package body log_handler_pkg at 7( 277) + 0 on 93;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_types.vhd" "c8eb96b82d0ccc561c079aba12b51ae910168263" "20220119003400.292":
+  package run_types_pkg at 9( 357) + 0 on 91;
+  package body run_types_pkg at 53( 1934) + 0 on 92;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/logger_pkg.vhd" "903142dad4b7b1f40ffd7a180a23a5716c2866a3" "20220112103114.004":
   package logger_pkg at 7( 277) + 0 on 41 body;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_handler_pkg.vhd" "cc2b723828df18d280011e5b698410f7e5cb7f7b" "20220112103113.912":
@@ -69,9 +69,9 @@ file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/pr
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/string_ops/src/string_ops.vhd" "c8f190b24e3dbb3d621ad815dea4f43d56a1b77a" "20220112103111.878":
   package string_ops at 9( 330) + 0 on 11 body;
   package body string_ops at 118( 3219) + 0 on 12;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/path/src/path.vhd" "3f09c47ee98c33119056d919988c9f9e8f67729a" "20220112103112.262":
-  package path at 9( 348) + 0 on 13 body;
-  package body path at 27( 776) + 0 on 14;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/path/src/path.vhd" "3f09c47ee98c33119056d919988c9f9e8f67729a" "20220119003359.898":
+  package path at 9( 348) + 0 on 87 body;
+  package body path at 27( 776) + 0 on 88;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/location_pkg.vhd" "a15b8bf23193335142be51b93a6222760558c05c" "20220112103112.424":
   package location_pkg at 6( 276) + 0 on 16 body;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/types.vhd" "a8ca7121bf51c3f0417a0ac47ea4d405ac8ec3c9" "20220112103112.486":
@@ -93,9 +93,9 @@ file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src
   package integer_vector_ptr_pkg at 13( 586) + 0 on 38 body;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/print_pkg-body.vhd" "d659eb40df59aa04e9ce16da0b2ed2545ad72236" "20220112103113.956":
   package body print_pkg at 7( 277) + 0 on 40;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/dictionary/src/dictionary.vhd" "065fa7426bb1612f00617efdb845a80343814096" "20220112103114.051":
-  package dictionary at 9( 339) + 0 on 42 body;
-  package body dictionary at 43( 1136) + 0 on 43;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/dictionary/src/dictionary.vhd" "065fa7426bb1612f00617efdb845a80343814096" "20220119003400.068":
+  package dictionary at 9( 339) + 0 on 89 body;
+  package body dictionary at 43( 1136) + 0 on 90;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/file_pkg.vhd" "cc2fda9adc0be00c12c52092a331265bc89d48a7" "20220112103114.173":
   package file_pkg at 7( 277) + 0 on 46 body;
   package body file_pkg at 30( 1027) + 0 on 47;
@@ -108,23 +108,23 @@ file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_vector_ptr_pool_pkg.vhd" "ad47388b059ae20821114be350cbb4876367fcf3" "20220112103114.940":
   package integer_vector_ptr_pool_pkg at 7( 277) + 0 on 57 body;
   package body integer_vector_ptr_pool_pkg at 33( 962) + 0 on 58;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_api.vhd" "6abfabb556ea1e0fd0aa9b2b7ae36efcdebeb513" "20220112103115.121":
-  package run_pkg at 10( 410) + 0 on 61 body;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run_api.vhd" "6abfabb556ea1e0fd0aa9b2b7ae36efcdebeb513" "20220119003401.279":
+  package run_pkg at 10( 410) + 0 on 96 body;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/integer_array_pkg-body.vhd" "6050bf00388329ebd8d7bb170b8bbf6384914e09" "20220112103115.208":
   package body integer_array_pkg at 7( 277) + 0 on 64;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/data_types/src/data_types_context.vhd" "47083f5510ef2329cde5a807549a9967c3a58add" "20220112103115.517":
   context data_types_context at 7( 277) + 0 on 67;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/core/src/stop_body_2008p.vhd" "325a913204067d38d46f53af83165505790027a0" "20220112103115.598":
   package body stop_pkg at 7( 277) + 0 on 69;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run.vhd" "c84e49de86679100ab7fbea576fd7dcaba4c0b85" "20220112103115.719":
-  package body run_pkg at 9( 356) + 0 on 72;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/run/src/run.vhd" "c84e49de86679100ab7fbea576fd7dcaba4c0b85" "20220119003401.429":
+  package body run_pkg at 9( 356) + 0 on 97;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/logging/src/log_levels_pkg-body.vhd" "19fcbcddd4591f68010ca98dcc4d4ae069f0d829" "20220112103116.252":
   package body log_levels_pkg at 7( 277) + 0 on 74;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/checker_pkg.vhd" "91005820a6c31c31b9628dcbda89cc9b99ab2630" "20220112103116.394":
   package checker_pkg at 9( 350) + 0 on 77 body;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_run_context.vhd" "77fb983a8aea85d2dc0cf86b962909a1b30e47b0" "20220112103116.492":
-  context vunit_run_context at 7( 277) + 0 on 80;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_run_context.vhd" "77fb983a8aea85d2dc0cf86b962909a1b30e47b0" "20220119003402.859":
+  context vunit_run_context at 7( 277) + 0 on 101;
 file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/check/src/check_api.vhd" "9aa0f87cc79049f68be845742f6d6b01151c7b3e" "20220112103116.606":
   package check_pkg at 10( 431) + 0 on 82 body;
-file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_context.vhd" "73b01df43dcec6266506c8ab94467b82599f311d" "20220112103116.747":
-  context vunit_context at 7( 277) + 0 on 85;
+file / "/home/salas/.local/lib/python3.8/site-packages/vunit/vhdl/vunit_context.vhd" "73b01df43dcec6266506c8ab94467b82599f311d" "20220119003403.037":
+  context vunit_context at 7( 277) + 0 on 102;
