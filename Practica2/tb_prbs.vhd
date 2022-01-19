@@ -67,12 +67,26 @@ begin
 	      ena <= '1';
 	      --wait for (2**N)*clk_period;
 	      wait for 143*clk_period;
+            
         ena <= '0';
 	      wait for 10*clk_period;
         test_runner_cleanup(runner);
       end if;
     end loop;
   end process main;
+
+  print_process : process (clk, rst)
+  begin
+    if(rst = '1') then
+      print("", "salida_vhdl.txt", write_mode);
+    end if;
+
+    if(rising_edge(clk) and valido = '1') then
+      print(to_string(secuencia_salida), "salida_vhdl.txt");
+      --print("prueba","salida_vhdl.txt");
+    end if;
+
+  end process;
 
   clk_process : process
   begin
