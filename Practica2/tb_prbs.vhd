@@ -9,7 +9,7 @@ entity tb_prbs is
   generic (runner_cfg : string);
 end;
 
--- Un comentario
+-- Un comentario (Editado)
 
 architecture bench of tb_prbs is
 
