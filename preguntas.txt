@@ -1,3 +1,0 @@
-He probado a subir solo algunos archivos haciendo git add *.vhd *.py, pero lo mejor sería usar un .gitignore?
-¿Hay alguna otra opción?¿Para nuestro caso qué nos conviene?
-Prueba de edición con la nueva configuración.

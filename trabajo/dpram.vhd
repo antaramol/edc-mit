@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 
 entity dpram is
   generic (
-    DATA_WIDTH : integer := 8;
+    DATA_WIDTH : integer := 8; -- Será puesta a 20 en nuestro top_level para facilitar la lectura de los datos
     ADDR_WIDTH : integer := 8
     );
   port (clk_a   : in  std_logic;
