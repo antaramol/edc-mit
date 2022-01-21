@@ -3,7 +3,7 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity contador is
-  generic( N : integer := 8 );
+  generic( N : integer := 8 ); -- Nº bits del contador
   port (
     rst    : in  std_logic;
     clk    : in  std_logic;
