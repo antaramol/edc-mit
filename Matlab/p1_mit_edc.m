@@ -1,5 +1,6 @@
 clear;
 close all;
+%% comentario
 %% Configuración del sistema OFDM
 NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
