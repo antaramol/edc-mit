@@ -19,7 +19,7 @@ begin
 
   signo <= reg(1);
 
-  comb: process (ena)
+  comb: process (ena,reg)
   begin
     if ena='1' then
       p_reg(11) <= reg(1) XOR reg(3); 
