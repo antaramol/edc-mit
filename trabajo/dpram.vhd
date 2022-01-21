@@ -13,11 +13,11 @@ entity dpram is
         addri_a : in  unsigned (ADDR_WIDTH-1 downto 0);
         datai_a : in  std_logic_vector (DATA_WIDTH-1 downto 0);
         we_a    : in  std_logic;
-        datao_a : out std_logic_vector (DATA_WIDTH-1 downto 0);
+        datao_a : out std_logic_vector (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
         addri_b : in  unsigned (ADDR_WIDTH-1 downto 0);
         datai_b : in  std_logic_vector (DATA_WIDTH-1 downto 0);
         we_b    : in  std_logic;
-        datao_b : out std_logic_vector (DATA_WIDTH-1 downto 0));
+        datao_b : out std_logic_vector (DATA_WIDTH-1 downto 0) := (OTHERS => '0'));
 end dpram;
 
 architecture dpram_arch of dpram is

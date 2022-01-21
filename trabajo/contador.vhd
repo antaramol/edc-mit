@@ -8,7 +8,7 @@ entity contador is
     rst    : in  std_logic;
     clk    : in  std_logic;
     ena    : in  std_logic;
-    cuenta : out std_logic_vector(N-1 downto 0)
+    cuenta : out unsigned(N-1 downto 0)
   );
 end contador;
 
@@ -18,7 +18,7 @@ architecture contador_arch of contador is
 
 begin
 
-  cuenta <= std_logic_vector(cont);
+  cuenta <= cont;
   
   comb: process (cont, ena)
   begin

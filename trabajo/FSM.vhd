@@ -42,14 +42,14 @@ begin
           p_estado <= primer_piloto;
         end if;
       WHEN primer_piloto =>
-        inf.re <= data((DATA_WIDTH/2)-1 downto 0);
-        inf.im <= data(DATA_WIDTH-1 downto DATA_WIDTH/2);
+        inf.re <= signed(data((DATA_WIDTH/2)-1 downto 0));
+        inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
         p_estado <= piloto_superior;
       WHEN piloto_superior => 
         if ((direccion + 12) > addr_cont) then
           addr_mem <= direccion + 12;
-          sup.re <= data((DATA_WIDTH/2)-1 downto 0);
-          sup.im <= data(DATA_WIDTH-1 downto DATA_WIDTH/2);
+          sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0));
+          sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
           p_estado <= activar_interpolador;
         else
           p_estado <= piloto_superior;
@@ -76,8 +76,10 @@ begin
       estado <= reposo;
       addr_mem <= (OTHERS => '0');
       en_PRBS <= '0';
-      inf <= (OTHERS => '0');
-      sup <= (OTHERS => '0');
+      inf.re <= to_signed(0,10);
+      inf.im <= to_signed(0,10);
+      sup.re <= to_signed(0,10);
+      sup.im <= to_signed(0,10);
       valido <= '0';
     elsif rising_edge(clk) then
       estado <= p_estado;

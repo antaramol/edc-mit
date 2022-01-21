@@ -34,7 +34,7 @@ architecture top_level_arch of top_level is
       rst    : in  std_logic;
       clk    : in  std_logic;
       ena    : in  std_logic;
-      cuenta : out std_logic_vector(N-1 downto 0));
+      cuenta : out unsigned(N-1 downto 0));
   end component;
 
   component dpram is
