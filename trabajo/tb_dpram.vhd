@@ -18,9 +18,6 @@ architecture tb_dpram_arch of tb_dpram is
 
   -- Clock period
   constant clk_period : time := 5 ns;
-  -- Generics
-  -- constant DATA_WIDTH : integer := 20; --Este dato es porque será más fácil de leer la memoria si le ponemos 20 bits de amplitud
-  -- constant ADDR_WIDTH : integer := 8;
 
   
   -- Ports
