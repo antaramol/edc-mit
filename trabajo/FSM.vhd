@@ -31,6 +31,7 @@ architecture FSM_arch of FSM is
   TYPE STATE_TYPE IS (reposo, primer_piloto, piloto_superior, activar_interpolador, esperar_interpolacion, habilitar_PRBS);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
+  SIGNAL piloto : signed(9 downto 0) := 4/3;
 
 begin
 
@@ -42,14 +43,18 @@ begin
           p_estado <= primer_piloto;
         end if;
       WHEN primer_piloto =>
-        inf.re <= signed(data((DATA_WIDTH/2)-1 downto 0));
-        inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+        en_PRBS <= '1';
+        piloto(9) <= signo;
+        inf.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
+        inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
         p_estado <= piloto_superior;
       WHEN piloto_superior => 
         if ((direccion + 12) > addr_cont) then
+          en_PRBS <= '1';
+          piloto(9) <= signo;
           addr_mem <= direccion + 12;
-          sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0));
-          sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+          sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
+          sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
           p_estado <= activar_interpolador;
         else
           p_estado <= piloto_superior;
@@ -59,7 +64,7 @@ begin
         p_estado <= esperar_interpolacion;
       WHEN esperar_interpolacion =>
         if (interpol_ok) then
-            p_estado <= habilitar_PRBS;
+            p_estado <= piloto_superior;
         end if;
       WHEN habilitar_PRBS =>
         en_PRBS <= '1';

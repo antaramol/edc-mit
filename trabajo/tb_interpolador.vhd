@@ -54,8 +54,8 @@ begin
 
         wait for 10 * clk_period;
         valid <= '1';
-        inf.re <= to_signed(4*100/3,10);
-        inf.im <= to_signed(4*100/3,10);
+        inf.re <= to_signed(4*100/3,10); -- Están multiplicados por 4/3 para simular el efecto de los pilotos,
+        inf.im <= to_signed(4*100/3,10); -- ya que el bloque interpolador lo compensa.
         sup.re <= to_signed(4*300/3,10);
         sup.im <= to_signed(4*300/3,10);
         
