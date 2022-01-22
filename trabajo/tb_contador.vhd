@@ -23,6 +23,7 @@ architecture bench of contador_tb is
   signal rst : std_logic := '0';
   signal clk : std_logic;
   signal ena : std_logic := '0';
+  -- signal rst_control : std_logic := '0';
   signal cuenta : unsigned(N-1 downto 0);
 
 begin
@@ -35,6 +36,7 @@ begin
       rst => rst,
       clk => clk,
       ena => ena,
+      --rst_control => rst_control,
       cuenta => cuenta
     );
 
@@ -50,7 +52,6 @@ begin
 	    wait for 10*clk_period;
 	    ena <= '1';
 	    wait for (2**N)*clk_period;
-        wait for 10 * clk_period;
 
       elsif run("arranque_stop") then
         wait for 4 * clk_period;
