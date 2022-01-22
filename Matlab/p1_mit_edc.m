@@ -4,8 +4,8 @@ close all;
 %% Configuración del sistema OFDM
 NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
-CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
-MODO = '8K';
+CONSTEL = 'BPSK';    % Constelación utilizada BPSK o QPSK
+MODO = '2K';
 SNR=10;             %SNR en dB
 
 tic
@@ -86,7 +86,7 @@ ofdm_util(ofdm_util==0) = const_points;
 ofdm_freq(ceil((NFFT-N_portadoras)/2)+(1:N_portadoras),:) = ofdm_util;
 
 figure
-stem(abs(ofdm_freq(:,1))); % Pintamos un único símbolo
+stem(ofdm_freq(:,1)); % Pintamos un único símbolo
 grid
 xlabel('Portadoras OFDM');
 ylabel('Amplitud');
