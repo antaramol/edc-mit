@@ -10,4 +10,5 @@ for n = 1:143
     registro = [xor(registro(end),registro(end-2)),registro(1:(end-1))];
 end
 
+% Los pilotos tienen amplitud +-4/3
 registro_salida = 4/3*2*(0.5-registro_salida);
