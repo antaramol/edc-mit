@@ -31,6 +31,7 @@ architecture bench of FSM_tb is
   signal en_PRBS : std_logic;
   signal inf : complex10;
   signal sup : complex10;
+  signal start_stop : std_logic;
   signal valido : std_logic;
   signal interpol_ok : std_logic;
 
@@ -51,6 +52,7 @@ begin
       en_PRBS => en_PRBS,
       inf => inf,
       sup => sup,
+      start_stop => start_stop,
       valido => valido,
       interpol_ok => interpol_ok
     );

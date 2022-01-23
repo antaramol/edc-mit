@@ -30,6 +30,7 @@ end FSM;
 architecture FSM_arch of FSM is
 
   -- TYPE STATE_TYPE IS (reposo, primer_piloto, piloto_superior, activar_interpolador, esperar_interpolacion, habilitar_PRBS);
+  -- TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_ultimo, esperar_interpol);
   TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_ultimo, esperar_interpol);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
@@ -76,7 +77,7 @@ begin
     
   -- end process;
 
-  comb: process (reposo, leer_primero, leer_ultimo, esperar_interpol)
+  comb: process (estado)
     begin
       CASE estado IS
         WHEN reposo =>
