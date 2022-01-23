@@ -8,6 +8,7 @@ entity contador is
     rst    : in  std_logic;
     clk    : in  std_logic;
     ena    : in  std_logic;
+    --rst_control : out std_logic;
     cuenta : out unsigned(N-1 downto 0)
   );
 end contador;
@@ -23,7 +24,13 @@ begin
   comb: process (cont, ena)
   begin
     if ena = '1' then
-      p_cont <= cont + 1;
+      if (cont = to_unsigned(11,N-1)) then
+        p_cont <= (others => '0');
+        --rst_control <= '1';
+      else
+        p_cont <= cont + 1;
+        --rst_control <= '0';
+      end if;
     else
       p_cont <= cont;    
     end if;  

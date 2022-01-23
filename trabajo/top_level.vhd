@@ -67,6 +67,7 @@ architecture top_level_arch of top_level is
       en_PRBS : out std_logic;
       inf : out complex10;
       sup : out complex10;
+      start_stop : in std_logic;
       valido : out std_logic;
       interpol_ok : in std_logic );
   end component;
@@ -126,6 +127,7 @@ begin
       en_PRBS => en_prbs,
       inf => h_inf,
       sup => h_sup,
+      start_stop => y_valid,
       valido => valido_interpol,
       interpol_ok => estim_valid );
   
