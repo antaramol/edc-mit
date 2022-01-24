@@ -77,7 +77,7 @@ begin
     
   -- end process;
 
-  comb: process (estado)
+  comb: process (estado,start_stop)
     begin
       CASE estado IS
         WHEN reposo =>

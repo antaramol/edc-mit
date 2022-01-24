@@ -59,9 +59,14 @@ begin
 
         wait for 15 * clk_period;
         we_a <= '1';
-        addri_a <= to_unsigned(8, ADDR_WIDTH);
+        addri_a <= to_unsigned(0, ADDR_WIDTH);
         datai_a <= std_logic_vector(to_unsigned(5,DATA_WIDTH));
         wait for clk_period;
+
+        addri_a <= to_unsigned(1,ADDR_WIDTH);
+        datai_a <= std_logic_vector(to_unsigned(6,DATA_WIDTH));
+        wait for clk_period;
+        
         we_a <= '0';
         wait for 10 * clk_period;
         addri_b <= to_unsigned(8, ADDR_WIDTH);
@@ -84,7 +89,6 @@ begin
 
         addri_a <= to_unsigned(8, ADDR_WIDTH);
         datai_a <= std_logic_vector(to_unsigned(5,DATA_WIDTH));
-        --wait for clk_period;
         we_a <= '1';
         wait for clk_period;
         we_a <= '0';

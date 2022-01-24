@@ -36,7 +36,6 @@ begin
       rst => rst,
       clk => clk,
       ena => ena,
-      --rst_control => rst_control,
       cuenta => cuenta
     );
 

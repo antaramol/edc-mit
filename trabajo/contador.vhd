@@ -15,6 +15,9 @@ end contador;
 
 architecture contador_arch of contador is
 
+  -- TYPE STATE_TYPE IS (reposo, contar);
+  -- SIGNAL estado, p_estado : STATE_TYPE;
+
   signal cont, p_cont : unsigned(N-1 downto 0);
 
 begin
@@ -23,7 +26,24 @@ begin
   
   comb: process (cont, ena)
   begin
-    if ena = '1' then
+    -- case estado is 
+    --   when reposo =>
+    --     p_cont <= cont;
+    --     if ena = '1' then
+    --       p_estado <= contar;
+    --     else
+    --       p_estado <= reposo;
+    --     end if;
+
+    --   when contar => 
+    --   p_estado <= reposo;
+    --   if (cont = to_unsigned(11,N-1)) then
+    --     p_cont <= (others => '0');
+    --   else
+    --     p_cont <= cont + 1;
+    --   end if; 
+    -- end case;
+    if (ena = '1') then
       if (cont = to_unsigned(11,N-1)) then
         p_cont <= (others => '0');
         --rst_control <= '1';
@@ -40,8 +60,10 @@ begin
   begin
     if rst = '1' then
       cont <= (others => '0');
+      --estado <= reposo;
     elsif rising_edge(clk) then
       cont <= p_cont;
+      --estado <= p_estado;
     end if;
   end process;
 
