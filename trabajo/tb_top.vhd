@@ -29,7 +29,7 @@ architecture bench of top_level_tb is
   -- Ports
   signal rst : std_logic := '0';
   signal clk : std_logic;
-  signal y : std_logic_vector (DATA_WIDTH-1 downto 0);
+  signal y : std_logic_vector (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
   signal y_valid : std_logic := '0';
   signal estim : complex10;
   signal estim_valid : std_logic;
