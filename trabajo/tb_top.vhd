@@ -75,7 +75,10 @@ begin
         wait for clk_period;
         rst <= '0';
 
+<<<<<<< HEAD
         wait for 4 * clk_period;
+=======
+>>>>>>> aefd500a99b6c90158217a91a8ae623d7a6ace8d
         portadora_re := load_csv("../Matlab/portadoras_re.csv");
         portadora_im := load_csv("../Matlab/portadoras_im.csv");
         
@@ -85,6 +88,7 @@ begin
           
           y_im := std_logic_vector(to_signed(get(portadora_im,i),32));
 
+<<<<<<< HEAD
           y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re(31 downto 22), DATA_WIDTH/2-1 downto 0 => y_im(31 downto 22));--Cogemos los 10 primeros bits, a la salida habría que
           -- añadir ceros al final hasta completar los 32 bits del integer, y dividir por 10e8
 
@@ -103,6 +107,18 @@ begin
         y <= (OTHERS => '0');
         y_valid <= '0';
 
+=======
+          y<= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re(31 downto 21), DATA_WIDTH/2-1 downto 0 => y_im(31 downto 21)); --Cogemos los 10 primeros bits, a la salida habría que
+          -- añadir ceros al final hasta completar los 32 bits del integer, y dividir por 10e8
+         
+          y_re_s <= y_re; -- Para verlo a la salida
+          y_im_s <= y_im; 
+
+          wait for clk_period;
+          i := i+1;
+        end loop;
+
+>>>>>>> aefd500a99b6c90158217a91a8ae623d7a6ace8d
 
         wait for 100*clk_period;
 
