@@ -34,6 +34,7 @@ architecture bench of top_level_tb is
   signal estim : complex10;
   signal estim_valid : std_logic;
   signal y_re_s, y_im_s : std_logic_vector(31 downto 0);
+  signal address, p_address : unsigned (ADDR_WIDTH-1 downto 0) := to_unsigned(0,ADDR_WIDTH);
  
 
 begin
@@ -49,6 +50,7 @@ begin
       y => y,
       y_valid => y_valid,
       estim => estim,
+      --address => address,
       estim_valid => estim_valid
     );
 
@@ -81,6 +83,7 @@ begin
         
         i := 0;
         y_valid <= '1';
+
         while i < length(portadora_re) loop --tienen la misma longitud
           y_re := std_logic_vector(to_signed(get(portadora_re,i),32));
           
@@ -88,15 +91,17 @@ begin
 
           y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re(31 downto 22), DATA_WIDTH/2-1 downto 0 => y_im(31 downto 22));--Cogemos los 10 primeros bits, a la salida habría que
           -- añadir ceros al final hasta completar los 32 bits del integer, y dividir por 10e8
-                   
+    
+          --y <= (OTHERS => '0');
+
           y_re_s <= y_re; -- Para verlo a la salida
           y_im_s <= y_im; 
-          
+          --address <= to_unsigned(i,ADDR_WIDTH);
           wait for clk_period;
           -- wait for clk_period/2;
           -- y_valid <= '0';
           -- wait for clk_period/2;
-          i := i+1;
+          i := i+1;            
         end loop;
 
         y <= (OTHERS => '0');

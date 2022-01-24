@@ -21,8 +21,6 @@ architecture contador_arch of contador is
   signal cont, p_cont : unsigned(N-1 downto 0);
 
 begin
-
-  cuenta <= cont;
   
   comb: process (cont, ena)
   begin
@@ -61,11 +59,13 @@ begin
     if rst = '1' then
       cont <= (others => '0');
       --estado <= reposo;
-    elsif rising_edge(clk) then
+    elsif falling_edge(clk) then
       cont <= p_cont;
+      --cont <= (0 => '1', others => '0');
       --estado <= p_estado;
     end if;
   end process;
 
+  cuenta <= cont;
 end contador_arch;
 

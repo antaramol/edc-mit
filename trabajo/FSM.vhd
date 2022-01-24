@@ -81,7 +81,7 @@ begin
     begin
       CASE estado IS
         WHEN reposo =>
-          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
+          addr_mem <= to_unsigned(0,ADDR_WIDTH);
           if (start_stop) then -- Cuando deja de ser cero
             p_estado <= leer_primero;
           end if;

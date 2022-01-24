@@ -8,8 +8,7 @@ entity dpram is
     DATA_WIDTH : integer := 8;
     ADDR_WIDTH : integer := 8
     );
-  port (clk_a   : in  std_logic;
-        clk_b   : in  std_logic;
+  port (clk  : in  std_logic;
         addri_a : in  unsigned (ADDR_WIDTH-1 downto 0);
         datai_a : in  std_logic_vector (DATA_WIDTH-1 downto 0);
         we_a    : in  std_logic;
@@ -28,17 +27,17 @@ architecture dpram_arch of dpram is
 begin
 
   -- When synthesizing this process, the synthesizer infers a BRAM 
-  process(clk_a, clk_b)
+  process(clk)
   begin
 
-    if (rising_edge(clk_a)) then
+    if (rising_edge(clk)) then
       if (we_a = '1') then
         ram(to_integer(addri_a)) <= datai_a;
       end if;
       datao_a <= ram(to_integer(addri_a));
     end if;
 
-    if (rising_edge(clk_b)) then
+    if (rising_edge(clk)) then
       if (we_b = '1') then
         ram(to_integer(addri_b)) <= datai_b;
       end if;

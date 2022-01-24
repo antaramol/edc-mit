@@ -39,8 +39,7 @@ begin
       ADDR_WIDTH => ADDR_WIDTH
     )
     port map (
-      clk_a => clk,
-      clk_b => clk,
+      clk => clk,
       addri_a => addri_a,
       datai_a => datai_a,
       we_a => we_a,
