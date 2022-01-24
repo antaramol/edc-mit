@@ -29,110 +29,92 @@ end FSM;
 
 architecture FSM_arch of FSM is
 
-  -- TYPE STATE_TYPE IS (reposo, primer_piloto, piloto_superior, activar_interpolador, esperar_interpolacion, habilitar_PRBS);
-  -- TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_ultimo, esperar_interpol);
   TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_ultimo, esperar_interpol);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
-  SIGNAL piloto : signed(9 downto 0) := to_signed(4/3,10);
+  SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
 
 begin
-
-  -- comb: process (estado, data, addr_cont, signo, interpol_ok)
-  -- begin
-  --   CASE estado IS
-  --     WHEN reposo =>
-  --       if (to_integer(addr_cont) = 11) then -- Cuando deja de ser cero
-  --         p_estado <= primer_piloto;
-  --       end if;
-  --     WHEN primer_piloto =>
-  --       en_PRBS <= '1';
-  --       piloto(9) <= signo;
-  --       inf.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
-  --       inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
-  --       p_estado <= piloto_superior;
-  --     WHEN piloto_superior => 
-  --       if ((direccion + 12) > addr_cont) then
-  --         en_PRBS <= '1';
-  --         piloto(9) <= signo;
-  --         addr_mem <= direccion + 12;
-  --         sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
-  --         sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
-  --         p_estado <= activar_interpolador;
-  --       else
-  --         p_estado <= piloto_superior;
-  --       end if;
-  --     WHEN activar_interpolador =>
-  --       valido <= '1';
-  --       p_estado <= esperar_interpolacion;
-  --     WHEN esperar_interpolacion =>
-  --       if (interpol_ok) then
-  --           p_estado <= piloto_superior;
-  --       end if;
-  --     WHEN habilitar_PRBS =>
-  --       en_PRBS <= '1';
-  --       inf <= sup;
-  --       p_estado <= piloto_superior;
-  --    END CASE;
-    
-  -- end process;
-
-  comb: process (estado,start_stop, addr_cont)
+  
+  comb: process (estado)
+    variable h : complex10;
     begin
+      en_PRBS <= '0';
+      addr_mem <= to_unsigned(0,ADDR_WIDTH);
+      h.re := signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+      h.im := signed(data(DATA_WIDTH/2-1 downto 0));
+     
+      valido <= '0';
+
       CASE estado IS
         WHEN reposo =>
-          addr_mem <= to_unsigned(0,ADDR_WIDTH);
-          if (start_stop) then -- Cuando deja de ser cero
-            p_estado <= leer_primero;
-          end if;
+          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
+        
         WHEN leer_primero =>
           en_PRBS <= '1';
-          piloto(9) <= signo;
-          addr_mem <= to_unsigned(0,ADDR_WIDTH);
-          inf.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
-          inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
-          p_estado <= esperar_escritura;
-        WHEN esperar_escritura => 
-          if (addr_cont = to_unsigned(10,ADDR_WIDTH)) then
-            p_estado <= leer_ultimo;
+          if(signo = '1') then
+            signo_s <= to_signed(-1,DATA_WIDTH/2);
           else
-            p_estado <= esperar_escritura;
+            signo_s <= to_signed(1, DATA_WIDTH/2);
           end if;
-        WHEN leer_ultimo => 
+
+          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
+         
+        WHEN esperar_escritura =>
+          
+          inf <= h;
+
+        WHEN leer_ultimo =>
           en_PRBS <= '1';
-          piloto(9) <= signo;
-          addr_mem <= direccion + to_unsigned(12,ADDR_WIDTH);
-          sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
-          sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
-          p_estado <= esperar_interpol;
-          valido <= '1';
-        WHEN esperar_interpol =>
-          p_estado <= esperar_interpol;
-          if (not start_stop) then
-            p_estado <= reposo;
-          elsif (not interpol_ok) then
-            p_estado <= leer_primero;
+          if(signo = '1') then
+            signo_s <= to_signed(-1,DATA_WIDTH/2);
+          else
+            signo_s <= to_signed(1, DATA_WIDTH/2);
           end if;
-       END CASE;
+
+          sup <= h;
+          valido <= '1';
+
+        WHEN esperar_interpol =>
+          
+         
+          
+          
+      END CASE;
       
     end process;
-  
-
   
   sinc: process (rst, clk)
   begin
     if rst = '1' then
       estado <= reposo;
-      addr_mem <= to_unsigned(0,ADDR_WIDTH);
-      en_PRBS <= '0';
-      inf.re <= to_signed(0,10);
-      inf.im <= to_signed(0,10);
-      sup.re <= to_signed(0,10);
-      sup.im <= to_signed(0,10);
-      valido <= '0';
     elsif rising_edge(clk) then
-      estado <= p_estado;
-      --addr_mem <= direccion;
+      CASE estado IS
+        WHEN reposo =>
+          if (start_stop) then
+            estado <= leer_primero;
+          end if;
+        WHEN leer_primero =>
+          estado <= esperar_escritura;
+
+        WHEN esperar_escritura => 
+          if (addr_cont = to_unsigned(1,ADDR_WIDTH)) then
+            estado <= leer_ultimo;
+          else
+            estado <= esperar_escritura;
+          end if;
+        WHEN leer_ultimo => 
+          estado <= esperar_interpol;
+        WHEN esperar_interpol =>
+          if(not start_stop) then
+            estado <= reposo;
+          elsif (not interpol_ok) then
+            estado <=leer_primero; 
+          else
+            estado <= esperar_interpol;
+          end if;
+      
+       END CASE;
     end if;
   end process;
 
