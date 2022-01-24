@@ -77,10 +77,11 @@ begin
     
   -- end process;
 
-  comb: process (estado,start_stop)
+  comb: process (estado,start_stop, addr_cont)
     begin
       CASE estado IS
         WHEN reposo =>
+          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
           if (start_stop) then -- Cuando deja de ser cero
             p_estado <= leer_primero;
           end if;
@@ -92,7 +93,7 @@ begin
           inf.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
           p_estado <= esperar_escritura;
         WHEN esperar_escritura => 
-          if (addr_cont = to_unsigned(11,ADDR_WIDTH)) then
+          if (addr_cont = to_unsigned(10,ADDR_WIDTH)) then
             p_estado <= leer_ultimo;
           else
             p_estado <= esperar_escritura;
@@ -100,7 +101,7 @@ begin
         WHEN leer_ultimo => 
           en_PRBS <= '1';
           piloto(9) <= signo;
-          addr_mem <= direccion + 12;
+          addr_mem <= direccion + to_unsigned(12,ADDR_WIDTH);
           sup.re <= signed(data((DATA_WIDTH/2)-1 downto 0))/piloto;
           sup.im <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2))/piloto;
           p_estado <= esperar_interpol;
@@ -122,7 +123,7 @@ begin
   begin
     if rst = '1' then
       estado <= reposo;
-      addr_mem <= (OTHERS => '0');
+      addr_mem <= to_unsigned(0,ADDR_WIDTH);
       en_PRBS <= '0';
       inf.re <= to_signed(0,10);
       inf.im <= to_signed(0,10);
@@ -131,7 +132,7 @@ begin
       valido <= '0';
     elsif rising_edge(clk) then
       estado <= p_estado;
-      addr_mem <= direccion;
+      --addr_mem <= direccion;
     end if;
   end process;
 

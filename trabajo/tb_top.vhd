@@ -24,7 +24,7 @@ architecture bench of top_level_tb is
   constant clk_period : time := 5 ns;
   -- Generics
   constant DATA_WIDTH : integer := 20;
-  constant ADDR_WIDTH : integer := 8;
+  constant ADDR_WIDTH : integer := 4;
 
   -- Ports
   signal rst : std_logic := '0';
@@ -80,6 +80,7 @@ begin
         portadora_im := load_csv("../Matlab/portadoras_im.csv");
         
         i := 0;
+        y_valid <= '1';
         while i < length(portadora_re) loop --tienen la misma longitud
           y_re := std_logic_vector(to_signed(get(portadora_re,i),32));
           
@@ -87,9 +88,7 @@ begin
 
           y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re(31 downto 22), DATA_WIDTH/2-1 downto 0 => y_im(31 downto 22));--Cogemos los 10 primeros bits, a la salida habría que
           -- añadir ceros al final hasta completar los 32 bits del integer, y dividir por 10e8
-
-          y_valid <= '1';
-          
+                   
           y_re_s <= y_re; -- Para verlo a la salida
           y_im_s <= y_im; 
           

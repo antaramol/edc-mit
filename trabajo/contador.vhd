@@ -44,7 +44,7 @@ begin
     --   end if; 
     -- end case;
     if (ena = '1') then
-      if (cont = to_unsigned(11,N-1)) then
+      if (cont = to_unsigned(11,N)) then
         p_cont <= (others => '0');
         --rst_control <= '1';
       else

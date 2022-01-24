@@ -9,7 +9,7 @@ context vunit_lib.vunit_context;
 entity tb_dpram is
   generic (runner_cfg : string;
     DATA_WIDTH : integer := 20; -- Será puesta a 20 en nuestro top_level para facilitar la lectura de los datos
-    ADDR_WIDTH : integer := 8
+    ADDR_WIDTH : integer := 4
   );
 end;
 
