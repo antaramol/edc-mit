@@ -29,7 +29,7 @@ end FSM;
 
 architecture FSM_arch of FSM is
 
-  TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_segundo, esperar_interpol);
+  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, esperar_escritura, leer_segundo, esperar_interpol);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
   SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
@@ -55,6 +55,8 @@ begin
       CASE estado IS
         WHEN reposo =>
           --salidas por defecto
+
+        WHEN estado_espera =>
         
         WHEN leer_primero =>
           en_PRBS <= '1';
@@ -63,12 +65,11 @@ begin
           -- else
           --   signo_s <= to_signed(1, DATA_WIDTH/2);
           -- end if;
-
-          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
+          inf <= h;
          
         WHEN esperar_escritura =>
-          
-          inf <= h;
+
+          addr_mem <= to_unsigned(12,ADDR_WIDTH);
 
         WHEN leer_segundo =>
           en_PRBS <= '1';
@@ -77,6 +78,7 @@ begin
           -- else
           --   signo_s <= to_signed(1, DATA_WIDTH/2);
           -- end if;
+
 
           sup <= h;
           valido <= '1';
@@ -97,13 +99,17 @@ begin
       CASE estado IS
         WHEN reposo =>
           if (start_stop) then
-            estado <= leer_primero;
+            estado <= estado_espera;
           end if;
+
+        WHEN estado_espera =>
+          estado <= leer_primero;
+
         WHEN leer_primero =>
           estado <= esperar_escritura;
 
         WHEN esperar_escritura => 
-          if (addr_cont = to_unsigned(11,ADDR_WIDTH)) then
+          if (addr_cont = to_unsigned(13,ADDR_WIDTH)) then
             estado <= leer_segundo;
           else
             estado <= esperar_escritura;
