@@ -237,6 +237,9 @@ for n = 1:N_pilotos-1 % ceil(PLOC/12)
     H_est((n-1)*12+2:12*n+1) = y;
 end
 
+% Load csv
+
+
 figure(3)
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
 legend('H real','H est')
