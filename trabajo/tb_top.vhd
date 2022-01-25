@@ -36,7 +36,6 @@ architecture bench of top_level_tb is
   signal y_re_s, y_im_s : std_logic_vector(9 downto 0);
   signal address, p_address : unsigned (ADDR_WIDTH-1 downto 0) := to_unsigned(0,ADDR_WIDTH);
 
-  signal salida_int : integer := 0;
   signal salida_std : std_logic_vector(31 downto 0);
   signal estim_std : std_logic_vector(9 downto 0);
 
@@ -131,6 +130,7 @@ begin
     -- The csv file can then be read from Matlab (using readmatrix() or
     -- csvread()) or octave (using csvread())
     variable outputs : integer_array_t;
+    variable salida_int : integer := 0;
 
   begin
     -- new_1d is a function defined in the VUnit libraries (specifically,
@@ -141,10 +141,10 @@ begin
     -- While the simulation is running, append output data to our output vector
     while (running) loop
       wait until rising_edge(clk);
-      if((rising_edge(estim_valid)) OR (estim_valid='1'))then
-        estim_std <= std_logic_vector(estim.re);
-        salida_std <= (31 downto 22 => estim_std, OTHERS => '0');
-        salida_int <= to_integer(signed(salida_std));
+      if(estim_valid)then
+        --estim_std <= std_logic_vector(estim.re);
+        --salida_std <= (31 downto 22 => estim_std, OTHERS => '0');
+        salida_int := to_integer(estim.re);
         if(salida_int /= 0) then
           append(outputs, salida_int);
         end if;
