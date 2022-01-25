@@ -37,17 +37,19 @@ architecture FSM_arch of FSM is
 begin
   
   comb: process (estado)
-    variable h : complex10;
+    variable h, nuevo_inf : complex10;
     begin
       en_PRBS <= '0';
       addr_mem <= to_unsigned(0,ADDR_WIDTH);
-      --if(signo = '1') then
-      --   h.re := -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
-      --   h.im := -signed(data(DATA_WIDTH/2-1 downto 0));
-      -- else
+      if(signo = '1') then
+         h.re := -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+         h.im := -signed(data(DATA_WIDTH/2-1 downto 0));
+       else
         h.re := signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
         h.im := signed(data(DATA_WIDTH/2-1 downto 0));
-      -- end if;
+       end if;
+
+       nuevo_inf := sup;
       
      
       valido <= '0';
@@ -65,10 +67,10 @@ begin
           -- else
           --   signo_s <= to_signed(1, DATA_WIDTH/2);
           -- end if;
-          inf <= h;
+          sup <= h;
          
         WHEN esperar_escritura =>
-
+          inf <= nuevo_inf;
           addr_mem <= to_unsigned(12,ADDR_WIDTH);
 
         WHEN leer_segundo =>
@@ -120,7 +122,7 @@ begin
           if(not start_stop) then
             estado <= reposo;
           elsif (not interpol_ok) then
-            estado <=leer_primero; 
+            estado <=esperar_escritura; 
           else
             estado <= esperar_interpol;
           end if;
