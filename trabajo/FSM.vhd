@@ -38,6 +38,7 @@ begin
   
   comb: process (estado)
     variable h, nuevo_inf : complex10;
+    variable i : unsigned(4 downto 0) := to_unsigned(12,5);
     begin
       en_PRBS <= '0';
       addr_mem <= to_unsigned(0,ADDR_WIDTH);
@@ -71,7 +72,7 @@ begin
          
         WHEN esperar_escritura =>
           inf <= nuevo_inf;
-          addr_mem <= to_unsigned(12,ADDR_WIDTH);
+          addr_mem <= i;
 
         WHEN leer_segundo =>
           en_PRBS <= '1';
@@ -84,6 +85,12 @@ begin
 
           sup <= h;
           valido <= '1';
+
+          if(i = 0) then
+            i := to_unsigned(12,5);
+          else
+            i := to_unsigned(0,5);
+          end if;
 
         WHEN esperar_interpol =>
          -- salidas por defecto     
