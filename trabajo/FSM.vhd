@@ -41,13 +41,13 @@ begin
     begin
       en_PRBS <= '0';
       addr_mem <= to_unsigned(0,ADDR_WIDTH);
-      if(signo = '1') then
-        h.re := -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
-        h.im := -signed(data(DATA_WIDTH/2-1 downto 0));
-      else
+      --if(signo = '1') then
+      --   h.re := -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+      --   h.im := -signed(data(DATA_WIDTH/2-1 downto 0));
+      -- else
         h.re := signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
         h.im := signed(data(DATA_WIDTH/2-1 downto 0));
-      end if;
+      -- end if;
       
      
       valido <= '0';
