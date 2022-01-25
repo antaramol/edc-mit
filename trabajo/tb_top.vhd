@@ -24,7 +24,7 @@ architecture bench of top_level_tb is
   constant clk_period : time := 5 ns;
   -- Generics
   constant DATA_WIDTH : integer := 20;
-  constant ADDR_WIDTH : integer := 4;
+  constant ADDR_WIDTH : integer := 5;
 
   -- Ports
   signal rst : std_logic := '0';

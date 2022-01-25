@@ -29,7 +29,7 @@ end FSM;
 
 architecture FSM_arch of FSM is
 
-  TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_ultimo, esperar_interpol);
+  TYPE STATE_TYPE IS (reposo, leer_primero, esperar_escritura, leer_segundo, esperar_interpol);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
   SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
@@ -70,7 +70,7 @@ begin
           
           inf <= h;
 
-        WHEN leer_ultimo =>
+        WHEN leer_segundo =>
           en_PRBS <= '1';
           -- if(signo = '1') then
           --   signo_s <= to_signed(-1,DATA_WIDTH/2);
@@ -103,12 +103,12 @@ begin
           estado <= esperar_escritura;
 
         WHEN esperar_escritura => 
-          if (addr_cont = to_unsigned(1,ADDR_WIDTH)) then
-            estado <= leer_ultimo;
+          if (addr_cont = to_unsigned(11,ADDR_WIDTH)) then
+            estado <= leer_segundo;
           else
             estado <= esperar_escritura;
           end if;
-        WHEN leer_ultimo => 
+        WHEN leer_segundo => 
           estado <= esperar_interpol;
         WHEN esperar_interpol =>
           if(not start_stop) then
