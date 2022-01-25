@@ -41,22 +41,28 @@ begin
     begin
       en_PRBS <= '0';
       addr_mem <= to_unsigned(0,ADDR_WIDTH);
-      h.re := signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
-      h.im := signed(data(DATA_WIDTH/2-1 downto 0));
+      if(signo = '1') then
+        h.re := -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+        h.im := -signed(data(DATA_WIDTH/2-1 downto 0));
+      else
+        h.re := signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+        h.im := signed(data(DATA_WIDTH/2-1 downto 0));
+      end if;
+      
      
       valido <= '0';
 
       CASE estado IS
         WHEN reposo =>
-          --addr_mem <= to_unsigned(0,ADDR_WIDTH);
+          --salidas por defecto
         
         WHEN leer_primero =>
           en_PRBS <= '1';
-          if(signo = '1') then
-            signo_s <= to_signed(-1,DATA_WIDTH/2);
-          else
-            signo_s <= to_signed(1, DATA_WIDTH/2);
-          end if;
+          -- if(signo = '1') then
+          --   signo_s <= to_signed(-1,DATA_WIDTH/2);
+          -- else
+          --   signo_s <= to_signed(1, DATA_WIDTH/2);
+          -- end if;
 
           --addr_mem <= to_unsigned(0,ADDR_WIDTH);
          
@@ -66,18 +72,17 @@ begin
 
         WHEN leer_ultimo =>
           en_PRBS <= '1';
-          if(signo = '1') then
-            signo_s <= to_signed(-1,DATA_WIDTH/2);
-          else
-            signo_s <= to_signed(1, DATA_WIDTH/2);
-          end if;
+          -- if(signo = '1') then
+          --   signo_s <= to_signed(-1,DATA_WIDTH/2);
+          -- else
+          --   signo_s <= to_signed(1, DATA_WIDTH/2);
+          -- end if;
 
           sup <= h;
           valido <= '1';
 
         WHEN esperar_interpol =>
-          
-         
+         -- salidas por defecto     
           
           
       END CASE;

@@ -35,6 +35,13 @@ architecture bench of top_level_tb is
   signal estim_valid : std_logic;
   signal y_re_s, y_im_s : std_logic_vector(31 downto 0);
   signal address, p_address : unsigned (ADDR_WIDTH-1 downto 0) := to_unsigned(0,ADDR_WIDTH);
+
+  signal salida_int : integer := 0;
+  signal salida_std : std_logic_vector(31 downto 0);
+  signal estim_std : std_logic_vector(9 downto 0);
+
+  signal running : boolean := true;
+  signal fin : boolean := false;
  
 
 begin
@@ -55,14 +62,8 @@ begin
     );
 
   main : process
-    -- variable portadoras_re, portadoras_im : integer_array_t;
-       
-    variable i : integer;
-    -- file input_file_re : text open read_mode is "../Matlab/portadoras_re.csv";
-    -- file input_file_im : text open read_mode is "../Matlab/portadoras_im.csv";
 
-    -- variable input_line_re, input_line_im : line;
-    -- variable portadora_re, portadora_im : real;
+    variable i : integer;
 
     variable portadora_re, portadora_im : integer_array_t;
     variable y_re, y_im : std_logic_vector(31 downto 0);
@@ -72,7 +73,7 @@ begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
       if run("test_alive") then
-        wait for 10 * clk_period;
+        --wait for 10 * clk_period;
         rst <= '1';
         wait for clk_period;
         rst <= '0';
@@ -112,10 +113,49 @@ begin
 
       end if;
     end loop;
+    
+    running <= false;
+    wait until fin = true;
 
     test_runner_cleanup(runner);
 
   end process main;
+
+
+  printer: process
+    -- Variable, internal to the process, where we will store the circuit
+    -- outputs so they can be written to a .csv file
+    -- The csv file can then be read from Matlab (using readmatrix() or
+    -- csvread()) or octave (using csvread())
+    variable outputs : integer_array_t;
+
+  begin
+    -- new_1d is a function defined in the VUnit libraries (specifically,
+    -- in integer_array_pkg) that initializes a 1-dimensional array.
+    -- There are also new_2d and new_3d functions in that package.
+    outputs := new_1d;
+
+    -- While the simulation is running, append output data to our output vector
+    while (running) loop
+      wait until rising_edge(clk);
+      if((rising_edge(estim_valid)) OR (estim_valid='1'))then
+        estim_std <= std_logic_vector(estim.re);
+        salida_std <= (31 downto 22 => estim_std, OTHERS => '0');
+        salida_int <= to_integer(signed(salida_std));
+        if(salida_int /= 0) then
+          append(outputs, salida_int);
+        end if;
+      end if;
+    end loop;
+
+    -- When no more clock cycles are expected, write the file and free the
+    -- memory used for the output vector
+    save_csv(outputs,"../Matlab/salida_re.csv");
+    fin <= true;
+    deallocate(outputs);
+    wait;
+  end process;
+
 
   
   clk_process : process
