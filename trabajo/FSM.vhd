@@ -100,12 +100,14 @@ begin
 
           valido <= '1';
 
-        WHEN esperar_interpol =>
           if(i = 0) then
-           i := to_unsigned(12,5);
-          else
-           i := to_unsigned(0,5);
-          end if;   
+            i := to_unsigned(12,5);
+           else
+            i := to_unsigned(0,5);
+           end if;   
+
+        WHEN esperar_interpol =>
+          
           
           
       END CASE;

@@ -145,9 +145,9 @@ begin
         --estim_std <= std_logic_vector(estim.re);
         --salida_std <= (31 downto 22 => estim_std, OTHERS => '0');
         salida_int := to_integer(estim.re);
-        if(salida_int /= 0) then
+        --if(salida_int /= 0) then
           append(outputs, salida_int);
-        end if;
+        --end if;
       end if;
     end loop;
 
