@@ -237,12 +237,16 @@ for n = 1:N_pilotos-1 % ceil(PLOC/12)
     H_est((n-1)*12+2:12*n+1) = y;
 end
 
-% Load csv
+% cargar entradas vhdl
+real_matrix_vhdl = readmatrix('salida_re.csv')';
+imag_matrix_vhdl = readmatrix('salida_im.csv')';
+H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
 
 
 figure(3)
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
-legend('H real','H est')
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
+legend('H real','H est','H (vhdl)')
 
 
 % División en frecuencia Tx = Rx / H_est
