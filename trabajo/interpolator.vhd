@@ -72,8 +72,6 @@ begin
     -- Discard the least significant bit since it doesn't contain any
     -- information (it is redundant with bit 13), and keep the 10 most
     -- significant of the rest
-    --estim.re <= estim_aux.re(13 downto 4);
-    --estim.im <= estim_aux.im(13 downto 4);
 
     sinc: process(rst, clk)
     begin

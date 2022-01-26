@@ -56,7 +56,6 @@ begin
       y => y,
       y_valid => y_valid,
       estim => estim,
-      --address => address,
       estim_valid => estim_valid
     );
 
@@ -71,7 +70,7 @@ begin
     
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("test_alive") then
+      if run("test_general") then
         wait for 2 * clk_period;
         rst <= '1';
         wait for 3 * clk_period;
@@ -88,28 +87,84 @@ begin
           y_re := std_logic_vector(to_signed(get(portadora_re,i),10));
           
           y_im := std_logic_vector(to_signed(get(portadora_im,i),10));
-
-          --y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re(31 downto 22), DATA_WIDTH/2-1 downto 0 => y_im(31 downto 22));--Cogemos los 10 primeros bits, a la salida habría que
-          -- añadir ceros al final hasta completar los 32 bits del integer, y dividir por 10e8
     
           y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re,
                 DATA_WIDTH/2-1 downto 0 => y_im);
 
-          --y <= (OTHERS => '0');
 
           y_re_s <= y_re; -- Para verlo a la salida
           y_im_s <= y_im; 
-          --address <= to_unsigned(i,ADDR_WIDTH);
+          
           wait for clk_period;
-          -- wait for clk_period/2;
-          -- y_valid <= '0';
-          -- wait for clk_period/2;
           i := i+1;            
         end loop;
 
         y <= (OTHERS => '0');
         y_valid <= '0';
 
+        wait for 100*clk_period;
+
+
+      elsif run("test_doble") then
+        wait for 2 * clk_period;
+        rst <= '1';
+        wait for 3 * clk_period;
+        rst <= '0';
+
+        wait for 4 * clk_period;
+        portadora_re := load_csv("../Matlab/portadoras_re.csv",10);
+        portadora_im := load_csv("../Matlab/portadoras_im.csv",10);
+        
+        i := 0;
+        y_valid <= '1';
+
+        while i < length(portadora_re) loop --tienen la misma longitud
+          y_re := std_logic_vector(to_signed(get(portadora_re,i),10));
+          
+          y_im := std_logic_vector(to_signed(get(portadora_im,i),10));
+    
+          y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re,
+                DATA_WIDTH/2-1 downto 0 => y_im);
+
+
+          y_re_s <= y_re; -- Para verlo a la salida
+          y_im_s <= y_im; 
+          
+          wait for clk_period;
+          i := i+1;            
+        end loop;
+
+        y <= (OTHERS => '0');
+        y_valid <= '0';
+
+        wait for 100*clk_period;
+
+        wait for 2 * clk_period;
+        rst <= '1';
+        wait for 3 * clk_period;
+        rst <= '0';
+
+        i := 0;
+        y_valid <= '1';
+
+        while i < length(portadora_re) loop --tienen la misma longitud
+          y_re := std_logic_vector(to_signed(get(portadora_re,i),10));
+          
+          y_im := std_logic_vector(to_signed(get(portadora_im,i),10));
+    
+          y <= (DATA_WIDTH-1 downto DATA_WIDTH/2 => y_re,
+                DATA_WIDTH/2-1 downto 0 => y_im);
+
+
+          y_re_s <= y_re; -- Para verlo a la salida
+          y_im_s <= y_im; 
+          
+          wait for clk_period;
+          i := i+1;            
+        end loop;
+
+        y <= (OTHERS => '0');
+        y_valid <= '0';
 
         wait for 100*clk_period;
 

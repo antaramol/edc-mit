@@ -14,7 +14,6 @@ entity FSM is
   port (
     rst    : in  std_logic;
     clk    : in  std_logic;
-    --addr_mem : out unsigned (ADDR_WIDTH-1 downto 0);
     data : in  std_logic_vector (DATA_WIDTH-1 downto 0);
     addr_cont : in unsigned (ADDR_WIDTH-1 downto 0);
     signo  : in std_logic;
@@ -30,7 +29,7 @@ end FSM;
 
 architecture FSM_arch of FSM is
 
-  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, espera_escritura, actualizar_salidas, esperar_interpol, leer_ultimo_simbolo, espera_interpol_salir, ultima_port);
+  TYPE STATE_TYPE IS (reposo, leer_primero, espera_escritura, actualizar_salidas, esperar_interpol, ultima_port);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
   SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
@@ -42,9 +41,6 @@ begin
     variable i : unsigned(4 downto 0) := to_unsigned(0,5);
     begin
       en_PRBS <= '0';
-      
-      -- addr_mem <= i;
-      
      
       valido <= '0';
 
@@ -57,8 +53,6 @@ begin
           inf.im <= to_signed(0,10);
           sup.re <= to_signed(0,10);
           sup.im <= to_signed(0,10);
-
-        WHEN estado_espera =>
         
         WHEN leer_primero =>
           en_PRBS <= '1';
@@ -87,8 +81,6 @@ begin
             sup.im <= signed(data(DATA_WIDTH/2-1 downto 0));
           end if;
 
-          --sup <= h;
-
           valido <= '1';
 
           if(i = 0) then
@@ -99,32 +91,7 @@ begin
 
         WHEN esperar_interpol =>
            
-          
-        WHEN leer_ultimo_simbolo =>
-          en_PRBS <= '1';
-
-          inf <= sup;
-
-          if(signo = '1') then
-            sup.re <= -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
-            sup.im <= -signed(data(DATA_WIDTH/2-1 downto 0));
-          else
-            sup.re <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
-            sup.im <= signed(data(DATA_WIDTH/2-1 downto 0));
-          end if;
-
-          --sup <= h;
-
-          valido <= '1';
-
-          if(i = 0) then
-            i := to_unsigned(12,5);
-          else
-            i := to_unsigned(0,5);
-          end if;   
-
-        WHEN espera_interpol_salir =>
-
+        
         WHEN ultima_port =>
           ultima_portadora <= '1';
           
@@ -145,9 +112,6 @@ begin
             estado <= leer_primero;
           end if;
 
-        WHEN estado_espera =>
-          estado <= leer_primero;
-
         WHEN leer_primero =>
           estado <= espera_escritura;
 
@@ -165,15 +129,7 @@ begin
           elsif (interpol_ok) then
             estado <=actualizar_salidas; 
           end if;
-          
-        WHEN leer_ultimo_simbolo =>
-          estado <= espera_interpol_salir;
-
-        WHEN espera_interpol_salir =>
-          if (interpol_ok) then
-            estado <= ultima_port;
-          end if;
-
+        
         WHEN ultima_port => 
           estado <= reposo;
           
