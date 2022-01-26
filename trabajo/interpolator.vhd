@@ -20,7 +20,7 @@ entity interpolator is
 
 architecture two_processes of interpolator is
 
-    signal i, p_i    : signed (4 downto 0);
+    signal i, p_i    : signed (4 downto 0) := (OTHERS => '0');
     signal estim_aux : complex15;
 
     -- Two signals needed for the firewall assertions
@@ -65,8 +65,8 @@ begin
     end process;
 
 
-    estim_aux.re <= inf.re*(12-i) + sup.re*i;
-    estim_aux.im <= inf.im*(12-i) + sup.im*i;
+    -- estim_aux.re <= inf.re*(12-i) + sup.re*i;
+    -- estim_aux.im <= inf.im*(12-i) + sup.im*i;
 
     -- Discard the least significant bit since it doesn't contain any
     -- information (it is redundant with bit 13), and keep the 10 most
@@ -78,7 +78,11 @@ begin
     begin
         if rst = '1' then
             i <= to_signed(12,i'length);  -- set i to 12
+            estim_aux.re <= signed(to_unsigned(0,15));
+            estim_aux.im <= signed(to_unsigned(0,15));
         elsif rising_edge(clk) then
+            estim_aux.re <= inf.re*(12-i) + sup.re*i;
+            estim_aux.im <= inf.im*(12-i) + sup.im*i;
             i <= p_i;
         end if;
     end process;
