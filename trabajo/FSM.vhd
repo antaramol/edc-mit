@@ -29,7 +29,7 @@ end FSM;
 
 architecture FSM_arch of FSM is
 
-  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, actualizar_salidas, esperar_interpol);
+  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, actualizar_salidas, esperar_interpol, leer_ultimo_simbolo, espera_interpol_salir);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
   SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
@@ -89,6 +89,32 @@ begin
            end if;   
 
         WHEN esperar_interpol =>
+           
+          
+        WHEN leer_ultimo_simbolo =>
+          en_PRBS <= '1';
+
+          inf <= sup;
+
+          if(signo = '1') then
+            sup.re <= -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+            sup.im <= -signed(data(DATA_WIDTH/2-1 downto 0));
+          else
+            sup.re <= signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
+            sup.im <= signed(data(DATA_WIDTH/2-1 downto 0));
+          end if;
+
+          --sup <= h;
+
+          valido <= '1';
+
+          if(i = 0) then
+            i := to_unsigned(12,5);
+          else
+            i := to_unsigned(0,5);
+          end if;   
+
+        WHEN espera_interpol_salir =>
           
           
           
@@ -122,12 +148,20 @@ begin
           estado <= esperar_interpol;
           
         WHEN esperar_interpol =>
-          if(not start_stop) then
-            estado <= reposo;
+          if(not start_stop) AND (interpol_ok) then
+            estado <= leer_ultimo_simbolo;
           elsif (interpol_ok) then
             estado <=actualizar_salidas; 
           end if;
-      
+          
+        WHEN leer_ultimo_simbolo =>
+          estado <= espera_interpol_salir;
+
+        WHEN espera_interpol_salir =>
+          if (interpol_ok) then
+            estado <= reposo;
+          end if;
+          
        END CASE;
     end if;
   end process;
