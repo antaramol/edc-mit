@@ -109,7 +109,7 @@ begin
     port map(clk => clk,
         addri_a => addr_cont, --address,
         datai_a => y_s,
-        we_a    => y_valid,
+        we_a    => y_valid or interpol_ok,
         datao_a => datao_a,
         addri_b => addr_mem,
         datai_b => (OTHERS => '0'),
