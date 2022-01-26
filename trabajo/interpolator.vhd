@@ -21,7 +21,7 @@ entity interpolator is
 architecture two_processes of interpolator is
 
     signal i, p_i    : signed (4 downto 0);
-    signal estim_aux, s_aux : complex15;
+    signal estim_aux : complex15;
 
     -- Two signals needed for the firewall assertions
     signal firewall_inf, firewall_sup : complex10;
@@ -35,7 +35,7 @@ begin
     -- afterwards go again to i = 12
     comb: process(inf, sup, valid, i)
     begin
-        if (i < 0) or (i > 11) then  -- Anything that is not between 0 and 11: idle
+        if (i < 1) or (i > 11) then  -- Anything that is not between 0 and 11: idle
             estim_valid <= '0';
             if valid = '1' then
                 p_i <= to_signed(1, p_i'length);
@@ -55,8 +55,8 @@ begin
         end if;
 
         if valid = '1' then
-            estim.re <= inf.re/4 + inf.re/4 + inf.re/4;
-            estim.im <= inf.im/4 + inf.im/4 + inf.im/4;
+            estim.re <= to_signed(3*to_integer(inf.re)/4,10);
+            estim.im <= to_signed(3*to_integer(inf.im)/4,10);
         else
             estim.re <= estim_aux.re(13 downto 4);
             estim.im <= estim_aux.im(13 downto 4);
