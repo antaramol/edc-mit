@@ -6,7 +6,7 @@ NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
 CONSTEL = 'BPSK';    % Constelación utilizada BPSK o QPSK
 MODO = '2K';
-SNR=10;             %SNR en dB
+SNR=100;             %SNR en dB
 
 tic
 
@@ -246,11 +246,12 @@ H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
 figure(3)
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
-legend('H real','H est','H (vhdl)')
+legend('H real','H est', 'H(vhdl)')
 
 
 % División en frecuencia Tx = Rx / H_est
-S_tx = ofdm_util_r./H_est;
+% S_tx = ofdm_util_r./H_est;
+S_tx = ofdm_util_r./H_est_vhdl;
 
 % Quitamos los pilotos
 S_tx(PLOC,:) = []; 
