@@ -21,13 +21,13 @@ entity interpolator is
 architecture two_processes of interpolator is
 
     signal i, p_i    : signed (4 downto 0);
-    signal estim_aux : complex15;
+    signal estim_aux, s_aux : complex15;
 
     -- Two signals needed for the firewall assertions
     signal firewall_inf, firewall_sup : complex10;
 
 begin
-
+    
     -- i controls the interpolation:
     -- when i = 12 we are idle
     -- if we receive a valid input, we go to i = 0
@@ -38,7 +38,7 @@ begin
         if (i < 0) or (i > 11) then  -- Anything that is not between 0 and 11: idle
             estim_valid <= '0';
             if valid = '1' then
-                p_i <= to_signed(0, p_i'length);
+                p_i <= to_signed(1, p_i'length);
             else
                 p_i <= to_signed(12,p_i'length);
             end if;
@@ -53,17 +53,25 @@ begin
             interpol_ok <= '0';
         end if;
 
+        if valid = '1' then
+            estim.re <= inf.re/4 + inf.re/4 + inf.re/4;
+            estim.im <= inf.im/4 + inf.im/4 + inf.im/4;
+        else
+            estim.re <= estim_aux.re(13 downto 4);
+            estim.im <= estim_aux.im(13 downto 4);
+        end if;
+
     end process;
 
 
     estim_aux.re <= inf.re*(12-i) + sup.re*i;
     estim_aux.im <= inf.im*(12-i) + sup.im*i;
 
-    -- Discard the most significant bit since it doesn't contain any
+    -- Discard the least significant bit since it doesn't contain any
     -- information (it is redundant with bit 13), and keep the 10 most
     -- significant of the rest
-    estim.re <= estim_aux.re(13 downto 4);
-    estim.im <= estim_aux.im(13 downto 4);
+    --estim.re <= estim_aux.re(13 downto 4);
+    --estim.im <= estim_aux.im(13 downto 4);
 
     sinc: process(rst, clk)
     begin
