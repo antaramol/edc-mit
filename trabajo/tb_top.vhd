@@ -72,9 +72,9 @@ begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
       if run("test_alive") then
-        --wait for 10 * clk_period;
+        wait for 2 * clk_period;
         rst <= '1';
-        wait for clk_period;
+        wait for 3 * clk_period;
         rst <= '0';
 
         wait for 4 * clk_period;

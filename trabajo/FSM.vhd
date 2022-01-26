@@ -53,10 +53,10 @@ begin
 
       CASE estado IS
         WHEN reposo =>
-          inf.re <= signed(to_unsigned(0,10));
-          inf.im <= signed(to_unsigned(0,10));
-          sup.re <= signed(to_unsigned(0,10));
-          sup.im <= signed(to_unsigned(0,10));
+          inf.re <= to_signed(0,10);
+          inf.im <= to_signed(0,10);
+          sup.re <= to_signed(0,10);
+          sup.im <= to_signed(0,10);
 
         WHEN estado_espera =>
         

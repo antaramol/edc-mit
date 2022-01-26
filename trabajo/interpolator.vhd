@@ -21,7 +21,7 @@ entity interpolator is
 architecture two_processes of interpolator is
 
     signal i, p_i    : signed (4 downto 0);
-    signal estim_aux : complex15;
+    signal estim_aux : complex15 := (re => to_signed(0,15), im => to_signed(0,15));
 
     -- Two signals needed for the firewall assertions
     signal firewall_inf, firewall_sup : complex10;
@@ -33,12 +33,14 @@ begin
     -- if we receive a valid input, we go to i = 0
     -- when i is between 0 and 11, interpolate
     -- afterwards go again to i = 12
-    comb: process(inf, sup, valid, i)
+    comb: process(rst, inf, sup, valid, i)
     begin
         
-        if (i < 1) or (i > 11) then  -- Anything that is not between 0 and 11: idle
+        if (i < 0) or (i > 11) then  -- Anything that is not between 0 and 11: idle
+            estim_valid <= '0';
             if valid = '1' then
                 p_i <= to_signed(1, p_i'length);
+                estim_valid <= '1';
             else
                 p_i <= to_signed(12,p_i'length);
             end if;
@@ -46,13 +48,16 @@ begin
             p_i <= i + 1;
         end if;
 
-        if ((i>=1) AND (i<=11)) then
+        if valid = '1' then
+            estim.re <= to_signed(3*to_integer(inf.re)/4,10);
+            estim.im <= to_signed(3*to_integer(inf.im)/4,10);
             estim_valid <= '1';
         else
-            estim_valid <= '0';
+            estim.re <= estim_aux.re(13 downto 4);
+            estim.im <= estim_aux.im(13 downto 4);
         end if;
 
-        if p_i = 11 then
+        if i = 11 then
             interpol_ok <= '1';
         else
             interpol_ok <= '0';
@@ -61,8 +66,8 @@ begin
     end process;
 
 
-    estim_aux.re <= inf.re*(12-i) + sup.re*i;
-    estim_aux.im <= inf.im*(12-i) + sup.im*i;
+    estim_aux.re <= inf.re*(12-p_i) + sup.re*p_i;
+    estim_aux.im <= inf.im*(12-p_i) + sup.im*p_i;
 
     -- Discard the least significant bit since it doesn't contain any
     -- information (it is redundant with bit 13), and keep the 10 most
@@ -73,19 +78,9 @@ begin
     sinc: process(rst, clk)
     begin
         if rst = '1' then
-            i <= to_signed(12,i'length);  -- set i to 12
-            estim.re <= signed(to_unsigned(0,10));
-            estim.im <= signed(to_unsigned(0,10));
-            --estim_valid <= '0';
+            i <= signed(to_unsigned(12,i'length));  -- set i to 12
         elsif rising_edge(clk) then
             i <= p_i;
-            if valid = '1' then
-                estim.re <= to_signed(3*to_integer(inf.re)/4,10);
-                estim.im <= to_signed(3*to_integer(inf.im)/4,10);
-            else
-                estim.re <= estim_aux.re(13 downto 4);
-                estim.im <= estim_aux.im(13 downto 4);
-            end if;
         end if;
     end process;
 
