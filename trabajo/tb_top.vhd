@@ -119,6 +119,9 @@ begin
     running <= false;
     wait until fin = true;
 
+    deallocate(portadora_re);
+    deallocate(portadora_im);
+
     test_runner_cleanup(runner);
 
   end process main;
@@ -129,33 +132,37 @@ begin
     -- outputs so they can be written to a .csv file
     -- The csv file can then be read from Matlab (using readmatrix() or
     -- csvread()) or octave (using csvread())
-    variable outputs : integer_array_t;
+    variable outputs_re, outputs_im : integer_array_t;
     variable salida_int : integer := 0;
 
   begin
     -- new_1d is a function defined in the VUnit libraries (specifically,
     -- in integer_array_pkg) that initializes a 1-dimensional array.
     -- There are also new_2d and new_3d functions in that package.
-    outputs := new_1d;
+    outputs_re := new_1d;
+    outputs_im := new_1d;
 
     -- While the simulation is running, append output data to our output vector
     while (running) loop
       wait until rising_edge(clk);
       if(estim_valid)then
-        --estim_std <= std_logic_vector(estim.re);
-        --salida_std <= (31 downto 22 => estim_std, OTHERS => '0');
+        
         salida_int := to_integer(estim.re);
-        --if(salida_int /= 0) then
-          append(outputs, salida_int);
-        --end if;
+        append(outputs_re, salida_int);
+
+        salida_int := to_integer(estim.im);
+        append(outputs_im, salida_int);
       end if;
     end loop;
 
     -- When no more clock cycles are expected, write the file and free the
     -- memory used for the output vector
-    save_csv(outputs,"../Matlab/salida_re.csv");
+    save_csv(outputs_re,"../Matlab/salida_re.csv");
+    save_csv(outputs_im,"../Matlab/salida_im.csv");
     fin <= true;
-    deallocate(outputs);
+    deallocate(outputs_re);
+    deallocate(outputs_im);
+
     wait;
   end process;
 
