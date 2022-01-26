@@ -237,6 +237,9 @@ for n = 1:N_pilotos-1 % ceil(PLOC/12)
     H_est((n-1)*12+2:12*n+1) = y;
 end
 
+% guardar datos para vhdl
+writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
+writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
 % cargar entradas vhdl
 real_matrix_vhdl = readmatrix('salida_re.csv')';
 imag_matrix_vhdl = readmatrix('salida_im.csv')';
