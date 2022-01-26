@@ -13,7 +13,8 @@ entity interpolator is
             sup : in complex10;
             valid : in std_logic;
             estim : out complex10;
-            estim_valid : out std_logic
+            estim_valid : out std_logic;
+            interpol_ok : out std_logic
         );
     end interpolator;
 
@@ -45,6 +46,13 @@ begin
             p_i <= i + 1;
             estim_valid <= '1';
         end if;
+
+        if p_i = 11 then
+            interpol_ok <= '1';
+        else
+            interpol_ok <= '0';
+        end if;
+
     end process;
 
 

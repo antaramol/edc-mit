@@ -111,7 +111,7 @@ begin
           if (addr_cont = to_unsigned(3,ADDR_WIDTH)) then
             estado <= leer_primero;
           end if;
-          if (addr_cont = to_unsigned(13,ADDR_WIDTH)) then
+          if (addr_cont >= to_unsigned(13,ADDR_WIDTH)) then
             estado <= actualizar_salidas;
           end if;
 
@@ -124,10 +124,8 @@ begin
         WHEN esperar_interpol =>
           if(not start_stop) then
             estado <= reposo;
-          elsif (not interpol_ok) then
+          elsif (interpol_ok) then
             estado <=actualizar_salidas; 
-          else
-            estado <= esperar_interpol;
           end if;
       
        END CASE;

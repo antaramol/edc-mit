@@ -28,6 +28,7 @@ architecture top_level_arch of top_level is
   signal data, datao_a, datai_b, y_s, p_y_s: std_logic_vector (DATA_WIDTH-1 downto 0);
   signal h_inf, h_sup : complex10;
   signal signo, en_prbs, valido_interpol : std_logic;
+  signal interpol_ok : std_logic;
 
   component contador is
     generic( N : integer := 8 );
@@ -88,7 +89,8 @@ architecture top_level_arch of top_level is
       sup : in complex10;
       valid : in std_logic;
       estim : out complex10;
-      estim_valid : out std_logic);
+      estim_valid : out std_logic;
+      interpol_ok : out std_logic);
   end component;
 
 begin
@@ -128,7 +130,7 @@ begin
       sup => h_sup,
       start_stop => y_valid,
       valido => valido_interpol,
-      interpol_ok => estim_valid );
+      interpol_ok => interpol_ok);
   
   prbs_inst : prbs
     port map(rst => rst,
@@ -144,7 +146,8 @@ begin
         sup => h_sup,
         valid => valido_interpol,
         estim => estim,
-        estim_valid => estim_valid);
+        estim_valid => estim_valid,
+        interpol_ok => interpol_ok);
 
   comb: process(y)
   begin

@@ -27,6 +27,7 @@ architecture bench of interpolator_tb is
   signal valid : std_logic;
   signal estim : complex10;
   signal estim_valid : std_logic;
+  signal interpol_ok : std_logic;
 
 begin
 
@@ -38,7 +39,8 @@ begin
       sup => sup,
       valid => valid,
       estim => estim,
-      estim_valid => estim_valid
+      estim_valid => estim_valid,
+      interpol_ok => interpol_ok
     );
 
   main : process
