@@ -161,7 +161,7 @@ begin
           
         WHEN esperar_interpol =>
           if(not start_stop) AND (interpol_ok) then
-            estado <= leer_ultimo_simbolo;
+            estado <= ultima_port;
           elsif (interpol_ok) then
             estado <=actualizar_salidas; 
           end if;
