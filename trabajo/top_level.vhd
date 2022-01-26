@@ -25,7 +25,7 @@ end top_level;
 architecture top_level_arch of top_level is
 
   signal addr_mem, addr_cont : unsigned (ADDR_WIDTH-1 downto 0);
-  signal data, datao_a, datai_b : std_logic_vector (DATA_WIDTH-1 downto 0);
+  signal data, datao_a, datai_b, y_s, p_y_s: std_logic_vector (DATA_WIDTH-1 downto 0);
   signal h_inf, h_sup : complex10;
   signal signo, en_prbs, valido_interpol : std_logic;
 
@@ -106,7 +106,7 @@ begin
         ADDR_WIDTH => ADDR_WIDTH)
     port map(clk => clk,
         addri_a => addr_cont, --address,
-        datai_a => y,
+        datai_a => y_s,
         we_a    => y_valid,
         datao_a => datao_a,
         addri_b => addr_mem,
@@ -145,5 +145,17 @@ begin
         valid => valido_interpol,
         estim => estim,
         estim_valid => estim_valid);
+
+  comb: process(y)
+  begin
+    p_y_s <= y;
+  end process;
+
+  sinc: process (rst, clk)
+  begin
+    if rising_edge(clk) then
+      y_s <= y;
+    end if;
+  end process;
 
 end top_level_arch;

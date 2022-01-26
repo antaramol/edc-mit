@@ -59,7 +59,7 @@ begin
     if rst = '1' then
       cont <= (others => '0');
       --estado <= reposo;
-    elsif falling_edge(clk) then
+    elsif rising_edge(clk) then
       cont <= p_cont;
       --cont <= (0 => '1', others => '0');
       --estado <= p_estado;
