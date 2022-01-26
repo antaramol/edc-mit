@@ -34,6 +34,7 @@ architecture bench of FSM_tb is
   signal start_stop : std_logic;
   signal valido : std_logic;
   signal interpol_ok : std_logic;
+  signal ultima_portadora : std_logic;
 
 begin
 
@@ -54,7 +55,8 @@ begin
       sup => sup,
       start_stop => start_stop,
       valido => valido,
-      interpol_ok => interpol_ok
+      interpol_ok => interpol_ok,
+      ultima_portadora => ultima_portadora
     );
 
   main : process

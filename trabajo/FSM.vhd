@@ -23,13 +23,14 @@ entity FSM is
     sup : out complex10;
     start_stop : in std_logic;
     valido : out std_logic;
-    interpol_ok : in std_logic
+    interpol_ok : in std_logic;
+    ultima_portadora : out std_logic
   );
 end FSM;
 
 architecture FSM_arch of FSM is
 
-  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, actualizar_salidas, esperar_interpol, leer_ultimo_simbolo, espera_interpol_salir);
+  TYPE STATE_TYPE IS (reposo, estado_espera,leer_primero, actualizar_salidas, esperar_interpol, leer_ultimo_simbolo, espera_interpol_salir, ultima_port);
   SIGNAL estado, p_estado : STATE_TYPE;
   SIGNAL direccion : unsigned(ADDR_WIDTH-1 downto 0);
   SIGNAL signo_s : signed(DATA_WIDTH/2-1 downto 0) := (OTHERS => '0');
@@ -46,6 +47,8 @@ begin
       
      
       valido <= '0';
+
+      ultima_portadora <= '0';
 
       CASE estado IS
         WHEN reposo =>
@@ -115,6 +118,9 @@ begin
           end if;   
 
         WHEN espera_interpol_salir =>
+
+        WHEN ultima_port =>
+          ultima_portadora <= '1';
           
           
           
@@ -159,8 +165,11 @@ begin
 
         WHEN espera_interpol_salir =>
           if (interpol_ok) then
-            estado <= reposo;
+            estado <= ultima_port;
           end if;
+
+        WHEN ultima_port => 
+          estado <= reposo;
           
        END CASE;
     end if;
