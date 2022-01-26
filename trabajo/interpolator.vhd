@@ -39,6 +39,7 @@ begin
             estim_valid <= '0';
             if valid = '1' then
                 p_i <= to_signed(1, p_i'length);
+                estim_valid <= '1';
             else
                 p_i <= to_signed(12,p_i'length);
             end if;
