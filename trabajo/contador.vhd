@@ -24,25 +24,8 @@ begin
   
   comb: process (cont, ena)
   begin
-    -- case estado is 
-    --   when reposo =>
-    --     p_cont <= cont;
-    --     if ena = '1' then
-    --       p_estado <= contar;
-    --     else
-    --       p_estado <= reposo;
-    --     end if;
-
-    --   when contar => 
-    --   p_estado <= reposo;
-    --   if (cont = to_unsigned(11,N-1)) then
-    --     p_cont <= (others => '0');
-    --   else
-    --     p_cont <= cont + 1;
-    --   end if; 
-    -- end case;
     if (ena = '1') then
-      if (cont = to_unsigned(23,N)) then
+      if (cont = to_unsigned(11,N)) then
         p_cont <= (others => '0');
         --rst_control <= '1';
       else

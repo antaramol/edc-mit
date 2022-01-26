@@ -39,20 +39,20 @@ architecture top_level_arch of top_level is
       cuenta : out unsigned(N-1 downto 0));
   end component;
 
-  component dpram is
-    generic (
-      DATA_WIDTH : integer := 8; -- Será puesta a 20 en nuestro top_level para facilitar la lectura de los datos
-      ADDR_WIDTH : integer := 8);
-    port (clk   : in  std_logic;
-      addri_a : in  unsigned (ADDR_WIDTH-1 downto 0);
-      datai_a : in  std_logic_vector (DATA_WIDTH-1 downto 0);
-      we_a    : in  std_logic;
-      datao_a : out std_logic_vector (DATA_WIDTH-1 downto 0);
-      addri_b : in  unsigned (ADDR_WIDTH-1 downto 0);
-      datai_b : in  std_logic_vector (DATA_WIDTH-1 downto 0);
-      we_b    : in  std_logic;
-      datao_b : out std_logic_vector (DATA_WIDTH-1 downto 0));
-  end component;
+  -- component dpram is
+  --   generic (
+  --     DATA_WIDTH : integer := 8; -- Será puesta a 20 en nuestro top_level para facilitar la lectura de los datos
+  --     ADDR_WIDTH : integer := 8);
+  --   port (clk   : in  std_logic;
+  --     addri_a : in  unsigned (ADDR_WIDTH-1 downto 0);
+  --     datai_a : in  std_logic_vector (DATA_WIDTH-1 downto 0);
+  --     we_a    : in  std_logic;
+  --     datao_a : out std_logic_vector (DATA_WIDTH-1 downto 0);
+  --     addri_b : in  unsigned (ADDR_WIDTH-1 downto 0);
+  --     datai_b : in  std_logic_vector (DATA_WIDTH-1 downto 0);
+  --     we_b    : in  std_logic;
+  --     datao_b : out std_logic_vector (DATA_WIDTH-1 downto 0));
+  -- end component;
 
   component FSM is
     generic (
@@ -61,7 +61,7 @@ architecture top_level_arch of top_level is
     port (
       rst    : in  std_logic;
       clk    : in  std_logic;
-      addr_mem : out unsigned (ADDR_WIDTH-1 downto 0);
+      --addr_mem : out unsigned (ADDR_WIDTH-1 downto 0);
       data : in  std_logic_vector (DATA_WIDTH-1 downto 0);
       addr_cont : in unsigned (ADDR_WIDTH-1 downto 0);
       signo  : in std_logic;
@@ -104,26 +104,26 @@ begin
         ena    => y_valid,
         cuenta => addr_cont);
 
-  dpram_inst : dpram
-    generic map(DATA_WIDTH => DATA_WIDTH,
-        ADDR_WIDTH => ADDR_WIDTH)
-    port map(clk => clk,
-        addri_a => addr_cont, --address,
-        datai_a => y_s,
-        we_a    => y_valid or interpol_ok,
-        datao_a => datao_a,
-        addri_b => addr_mem,
-        datai_b => (OTHERS => '0'),
-        we_b    => '0',
-        datao_b => data);
+  -- dpram_inst : dpram
+  --   generic map(DATA_WIDTH => DATA_WIDTH,
+  --       ADDR_WIDTH => ADDR_WIDTH)
+  --   port map(clk => clk,
+  --       addri_a => addr_cont, --address,
+  --       datai_a => y_s,
+  --       we_a    => y_valid or interpol_ok,
+  --       datao_a => datao_a,
+  --       addri_b => addr_mem,
+  --       datai_b => (OTHERS => '0'),
+  --       we_b    => '0',
+  --       datao_b => data);
 
   FSM_inst : FSM
     generic map(DATA_WIDTH => DATA_WIDTH,
             ADDR_WIDTH => ADDR_WIDTH)
     port map(rst => rst,
       clk  => clk,
-      addr_mem => addr_mem,
-      data => data,
+      --addr_mem => addr_mem,
+      data => y,
       addr_cont => addr_cont,
       signo  => signo,
       en_PRBS => en_prbs,
@@ -153,16 +153,5 @@ begin
 
   estim_valid <= estim_valid_interpol OR ultima_portadora;
 
-  comb: process(y)
-  begin
-    p_y_s <= y;
-  end process;
-
-  sinc: process (rst, clk)
-  begin
-    if rising_edge(clk) then
-      y_s <= y;
-    end if;
-  end process;
 
 end top_level_arch;

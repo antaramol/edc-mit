@@ -46,7 +46,7 @@ begin
     port map (
       rst => rst,
       clk => clk,
-      addr_mem => addr_mem,
+      --addr_mem => addr_mem,
       data => data,
       addr_cont => addr_cont,
       signo => signo,
