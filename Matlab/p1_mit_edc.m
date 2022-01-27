@@ -256,11 +256,25 @@ legend('H real','H est', 'H(vhdl)')
 % S_tx = ofdm_util_r./H_est;
 S_tx = ofdm_util_r./H_est_vhdl;
 
+% Comparamos con vhdl
+rx_re = readmatrix('s_rx_re.csv')';
+rx_im = readmatrix('s_rx_im.csv')';
+
+S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
+
+figure
+hold on
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx)))
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
+legend('S_tx', 'S_tx(vhdl)')
+
 % Quitamos los pilotos
 S_tx(PLOC,:) = []; 
+S_tx_vhdl(PLOC,:) = []; 
 
 % Concatenar los bits recibidos
 rx_constel = reshape(S_tx,(N_portadoras-N_pilotos)*NUM_SYMB,1).';
+%rx_constel = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
 
 scatterplot(rx_constel);
 
@@ -276,4 +290,7 @@ end
 
 BER = mean(xor(bits_rx, bits_tx.'));
 fprintf(1, 'BER = %f\n', BER);
+
+%BER_vhdl = mean(xor(bits_rx, bits_tx(1:NDATA*M).'));
+%fprintf(1, 'BER_vhdl = %f\n', BER_vhdl);
 toc
