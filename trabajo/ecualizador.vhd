@@ -26,24 +26,48 @@ architecture ecualizador_arch of ecualizador is
     type registro_type is array (12 downto 0) of std_logic_vector (DATA_WIDTH-1 downto 0); -- 12 posiciones
     signal reg, p_reg : registro_type  := (OTHERS => (others => '0'));
 
-    signal real_s, imag_s : signed(9 downto 0) := to_signed(0,10); -- A la salida del divisor
-    signal divisor, p_divisor : signed(19 downto 0) := to_signed(1,20);
+    signal a, b, c, d : signed(9 downto 0); -- A la salida del divisor
+    signal divisor : signed(19 downto 0);
+    signal dividendo_re, dividendo_im : signed(19 downto 0);
 
-    signal x_eq_re, x_eq_im : signed(19 downto 0) := to_signed(0,20);
-
+    signal x_aux_re, x_aux_im : signed(9 downto 0);
+    
 
 
 begin
 
-    real_s <= signed(y(DATA_WIDTH-1 downto DATA_WIDTH/2))/divisor;
-    imag_s <= -signed(y(DATA_WIDTH/2-1 downto 0))/divisor;
 
-    x_eq_re <= real_s * signed(reg(0)(19 downto 10));
-    x_eq_im <= imag_s * signed(reg(0)(9 downto 0));
+    a <= H_est.re;
+    b <= H_est.im;
+    c <= signed(reg(0)(19 downto 10));
+    d <= signed(reg(0)(9 downto 0));
 
-    x_eq.re <= x_eq_re(19 downto 10);
-    x_eq.im <= x_eq_im(19 downto 10);
+    --dividendo_re <= a*c + b*d;
+    --dividendo_im <= b*c - a*d;
 
+    dividendo_re <= H_est.re * signed(reg(0)(19 downto 10)) + H_est.im * signed(reg(0)(9 downto 0));
+    dividendo_im <= H_est.im * signed(reg(0)(19 downto 10)) - H_est.re * signed(reg(0)(9 downto 0));
+
+    divisor <= to_signed(to_integer(H_est.re)**2 + to_integer(H_est.im)**2,20);
+    
+    comb: process (H_valid, H_est)
+    begin
+      if (H_valid = '1') then
+      
+        x_aux_re <= to_signed(to_integer(dividendo_re*(2**7)) / to_integer(divisor),10);
+        x_aux_im <= to_signed(to_integer(dividendo_im*(2**7)) / to_integer(divisor),10);
+        
+      else
+        x_aux_re <= to_signed(0,10);
+        x_aux_im <= to_signed(0,10);
+      end if;
+
+    end process;
+
+    x_eq.re <= x_aux_re;
+    x_eq.im <= x_aux_im;
+    
+    
     sinc: process (rst, clk)
         variable i : unsigned(3 downto 0);
     begin
@@ -55,30 +79,7 @@ begin
         end loop;
       elsif rising_edge(clk) then
         reg(12) <= y;
-        reg (11 downto 0) <= reg(12 downto 1);
-
-        if (H_valid = '1') then
-            divisor <= to_signed(to_integer(H_est.re)**2 + to_integer(H_est.im)**2,20);
-            real_s <= signed(y(DATA_WIDTH-1 downto DATA_WIDTH/2))/divisor;
-            imag_s <= -signed(y(DATA_WIDTH/2-1 downto 0))/divisor;
-
-            x_eq_re <= real_s * signed(reg(0)(19 downto 10));
-            x_eq_im <= imag_s * signed(reg(0)(9 downto 0));
-
-            x_eq.re <= x_eq_re(19 downto 10);
-            x_eq.im <= x_eq_im(19 downto 10);
-        else
-            divisor <= to_signed(1,20);
-            real_s <= to_signed(0,10);
-            imag_s <= to_signed(0,10);
-
-            x_eq_re <= to_signed(0,20);
-            x_eq_im <= to_signed(0,20);
-
-            x_eq.re <= to_signed(0,10);
-            x_eq.im <= to_signed(0,10);
-        end if;
-       
+        reg (11 downto 0) <= reg(12 downto 1);  
       end if;
     end process;
 
