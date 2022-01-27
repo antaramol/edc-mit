@@ -16,6 +16,7 @@ entity top_level is
     clk    : in  std_logic;
     y : out  std_logic_vector (DATA_WIDTH-1 downto 0);
     y_valid : in std_logic;
+    valid_out : out std_logic;
     x_eq : out complex10
   );
 end top_level;
@@ -30,73 +31,10 @@ architecture top_level_arch of top_level is
   signal estim : complex10;
   signal estim_valid : std_logic;
 
-  component contador is
-    generic( N : integer := 8 );
-    port (
-      rst    : in  std_logic;
-      clk    : in  std_logic;
-      ena    : in  std_logic;
-      cuenta : out unsigned(N-1 downto 0));
-  end component;
-
-  component FSM is
-    generic (
-      DATA_WIDTH : integer := 8;
-      ADDR_WIDTH : integer := 8  );
-    port (
-      rst    : in  std_logic;
-      clk    : in  std_logic;
-      data : in  std_logic_vector (DATA_WIDTH-1 downto 0);
-      addr_cont : in unsigned (ADDR_WIDTH-1 downto 0);
-      signo  : in std_logic;
-      en_PRBS : out std_logic;
-      inf : out complex10;
-      sup : out complex10;
-      start_stop : in std_logic;
-      valido : out std_logic;
-      interpol_ok : in std_logic;
-      ultima_portadora : out std_logic );
-  end component;
-
-  component prbs is
-    port (
-      rst    : in  std_ulogic;
-      clk    : in  std_ulogic;
-      ena    : in  std_ulogic;
-      signo  : out std_ulogic );
-  end component;
-
-  component interpolator is
-    port (
-      clk : in std_logic;
-      rst : in std_logic;
-      inf : in complex10;
-      sup : in complex10;
-      valid : in std_logic;
-      estim : out complex10;
-      estim_valid : out std_logic;
-      interpol_ok : out std_logic);
-  end component;
-
-  component ecualizador is
-    generic (
-      DATA_WIDTH : integer := 8;
-      ADDR_WIDTH : integer := 8
-    );
-    port (
-      rst    : in  std_logic;
-      clk    : in  std_logic;
-      y : in  std_logic_vector (DATA_WIDTH-1 downto 0);
-      y_valid : in std_logic;
-      H_est : in complex10;
-      H_valid : in std_logic;
-      x_eq : out complex10
-    );
-  end component;
-
+ 
 begin
   
-  contador_inst : contador
+  contador_inst : entity src_lib.contador
     generic map(N => ADDR_WIDTH )
     port map(
         rst    => rst,
@@ -104,7 +42,7 @@ begin
         ena    => y_valid,
         cuenta => addr_cont);
 
-  FSM_inst : FSM
+  FSM_inst :  entity src_lib.FSM
     generic map(DATA_WIDTH => DATA_WIDTH,
             ADDR_WIDTH => ADDR_WIDTH)
     port map(rst => rst,
@@ -120,14 +58,14 @@ begin
       interpol_ok => interpol_ok,
       ultima_portadora => ultima_portadora);
   
-  prbs_inst : prbs
+  prbs_inst : entity src_lib.prbs
     port map(rst => rst,
         clk  => clk,
         ena  => en_prbs,
         signo => signo );
 
 
-  interpolator_inst : interpolator
+  interpolator_inst : entity src_lib.interpolator
     port map(clk => clk,
         rst => rst,
         inf => h_inf,
@@ -139,7 +77,7 @@ begin
 
   estim_valid <= estim_valid_interpol OR ultima_portadora;
 
-  ecualizador_inst : ecualizador
+  ecualizador_inst :  entity src_lib.ecualizador
   generic map(
     DATA_WIDTH => DATA_WIDTH,
     ADDR_WIDTH => ADDR_WIDTH
@@ -151,6 +89,7 @@ begin
     y_valid => y_valid,
     H_est => estim,
     H_valid => estim_valid,
+    salida_valid => valid_out,
     x_eq => x_eq);
 
 

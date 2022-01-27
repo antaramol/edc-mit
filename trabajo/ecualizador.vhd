@@ -17,6 +17,7 @@ entity ecualizador is
     y_valid : in std_logic;
     H_est : in complex10;
     H_valid : in std_logic;
+    salida_valid : out std_logic;
     x_eq : out complex10
   );
 end ecualizador;
@@ -36,6 +37,7 @@ architecture ecualizador_arch of ecualizador is
 
 begin
 
+    salida_valid <= H_valid;
 
     a <= H_est.re;
     b <= H_est.im;

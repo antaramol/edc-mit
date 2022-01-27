@@ -43,6 +43,7 @@ architecture bench of top_level_tb is
   signal fin : boolean := false;
 
   signal x_eq : complex10;
+  signal valid_out : std_logic;
  
 
 begin
@@ -57,6 +58,7 @@ begin
       clk => clk,
       y => y,
       y_valid => y_valid,
+      valid_out => valid_out,
       x_eq => x_eq
     );
 
@@ -108,8 +110,8 @@ begin
       end if;
     end loop;
     
-    -- running <= false;
-    -- wait until fin = true;
+    running <= false;
+    wait until fin = true;
 
     deallocate(portadora_re);
     deallocate(portadora_im);
@@ -119,44 +121,44 @@ begin
   end process main;
 
 
-  --printer: process
+  printer: process
     -- Variable, internal to the process, where we will store the circuit
     -- outputs so they can be written to a .csv file
     -- The csv file can then be read from Matlab (using readmatrix() or
     -- csvread()) or octave (using csvread())
-    --variable outputs_re, outputs_im : integer_array_t;
-    --variable salida_int : integer := 0;
+    variable outputs_re, outputs_im : integer_array_t;
+    variable salida_int : integer := 0;
 
-  --begin
+  begin
     -- new_1d is a function defined in the VUnit libraries (specifically,
     -- in integer_array_pkg) that initializes a 1-dimensional array.
     -- There are also new_2d and new_3d functions in that package.
-    --outputs_re := new_1d;
-    --outputs_im := new_1d;
+    outputs_re := new_1d;
+    outputs_im := new_1d;
 
     -- While the simulation is running, append output data to our output vector
-  --   while (running) loop
-  --     wait until rising_edge(clk);
-  --     if(estim_valid)then
+    while (running) loop
+      wait until rising_edge(clk);
+      if(valid_out)then
         
-  --       salida_int := to_integer(estim.re);
-  --       append(outputs_re, salida_int);
+        salida_int := to_integer(x_eq.re);
+        append(outputs_re, salida_int);
 
-  --       salida_int := to_integer(estim.im);
-  --       append(outputs_im, salida_int);
-  --     end if;
-  --   end loop;
+        salida_int := to_integer(x_eq.im);
+        append(outputs_im, salida_int);
+      end if;
+    end loop;
 
-  --   -- When no more clock cycles are expected, write the file and free the
-  --   -- memory used for the output vector
-  --   save_csv(outputs_re,"../Matlab/salida_re.csv");
-  --   save_csv(outputs_im,"../Matlab/salida_im.csv");
-  --   fin <= true;
-  --   deallocate(outputs_re);
-  --   deallocate(outputs_im);
+    -- When no more clock cycles are expected, write the file and free the
+    -- memory used for the output vector
+    save_csv(outputs_re,"../Matlab/s_rx_re.csv");
+    save_csv(outputs_im,"../Matlab/s_rx_im.csv");
+    fin <= true;
+    deallocate(outputs_re);
+    deallocate(outputs_im);
 
-  --   wait;
-  -- end process;
+    wait;
+  end process;
 
 
   
