@@ -16,8 +16,7 @@ entity top_level is
     clk    : in  std_logic;
     y : out  std_logic_vector (DATA_WIDTH-1 downto 0);
     y_valid : in std_logic;
-    estim : out complex10;
-    estim_valid : out std_logic
+    x_eq : out complex10
   );
 end top_level;
 
@@ -28,6 +27,8 @@ architecture top_level_arch of top_level is
   signal h_inf, h_sup : complex10;
   signal signo, en_prbs, valido_interpol : std_logic;
   signal interpol_ok, ultima_portadora, estim_valid_interpol : std_logic;
+  signal estim : complex10;
+  signal estim_valid : std_logic;
 
   component contador is
     generic( N : integer := 8 );
@@ -77,6 +78,22 @@ architecture top_level_arch of top_level is
       interpol_ok : out std_logic);
   end component;
 
+  component ecualizador is
+    generic (
+      DATA_WIDTH : integer := 8;
+      ADDR_WIDTH : integer := 8
+    );
+    port (
+      rst    : in  std_logic;
+      clk    : in  std_logic;
+      y : in  std_logic_vector (DATA_WIDTH-1 downto 0);
+      y_valid : in std_logic;
+      H_est : in complex10;
+      H_valid : in std_logic;
+      x_eq : out complex10
+    );
+  end component;
+
 begin
   
   contador_inst : contador
@@ -121,6 +138,21 @@ begin
         interpol_ok => interpol_ok);
 
   estim_valid <= estim_valid_interpol OR ultima_portadora;
+
+  ecualizador_inst : ecualizador
+  generic map(
+    DATA_WIDTH => DATA_WIDTH,
+    ADDR_WIDTH => ADDR_WIDTH
+  )
+  port map(
+    rst    => rst,
+    clk    => clk,
+    y => y,
+    y_valid => y_valid,
+    H_est => estim,
+    H_valid => estim_valid,
+    x_eq => x_eq);
+
 
 
 end top_level_arch;
