@@ -38,12 +38,6 @@ switch CONSTEL
     case 'QPSK'
         C=[1+1i 1-1i -1+1i -1-1i];
         M=2;      
-    case '16QAM'
-        C=[3+3i 3+1i 3-1i 3-3i -3+3i -3+1i -3-1i -3-3i 1+3i 1+1i 1-1i 1-3i -1+3i -1+1i -1-1i -1-3i];
-        M=4;
-    case '64QAM'
-        C=[7+7i 7+5i 7+3i 7+1i 7-1i 7-3i 7-5i 7-7i 5+7i 5+5i 5+3i 5+1i 5-1i 5-3i 5-5i 5-7i 3+7i 3+5i 3+3i 3+1i 3-1i 3-3i 3-5i 3-7i 1+7i 1+5i 1+3i 1+1i 1-1i 1-3i 1-5i 1-7i -1+7i -1+5i -1+3i -1+1i -1-1i -1-3i -1-5i -1-7i -3+7i -3+5i -3+3i -3+1i -3-1i -3-3i -3-5i -3-7i -5+7i -5+5i -5+3i -5+1i -5-1i -5-3i -5-5i -5-7i -7+7i -7+5i -7+3i -7+1i -7-1i -7-3i -7-5i -7-7i];
-        M=6;
 end
 
 % scatterplot(C);
@@ -75,10 +69,16 @@ ofdm_freq = zeros(NFFT, NUM_SYMB); % NFFT x NUM_SYMB
 ofdm_util = ofdm_freq(ceil((NFFT-N_portadoras)/2)+(1:N_portadoras),:);
 
 registro = ones(1,11);
-pilotos = zeros(N_pilotos,NUM_SYMB);
+registro_salida = zeros(1,N_pilotos);
 for n = 1:N_pilotos
-    pilotos(n,:) = 4/3*2*(0.5-registro(end));
+    % registro_salida = [registro(end),registro_salida(1:end-1)];
+    registro_salida(n) = registro(end);
     registro = [xor(registro(end),registro(end-2)),registro(1:(end-1))];
+end
+
+pilotos = zeros(N_pilotos,10);
+for n = 1:NUM_SYMB
+    pilotos(:,n) = 4/3*2*(0.5-registro_salida);
 end
 
 ofdm_util(PLOC,:) = pilotos;
@@ -156,11 +156,17 @@ theta_i = parametros(:,3);
 delta_f = 1/T_U;
 k = (-NFFT/2:NFFT/2-1);
 
-% H_real = zeros(NFFT,1);
+H_real = zeros(NFFT,1);
+% for n= 1:2048
+%     H_real(n,1) = sum(rho_i.*exp(-1i*theta_i).*exp(-1i*2*pi*k(n)*delta_f*tau_i));
+% end
 
-H_real = ((rho_i.*exp(-1i*theta_i)).'*(exp(-1i*2*pi*k*delta_f.*tau_i)))';
+for n = 1:20
+    H_real = H_real + rho_i(n)*exp(-1i*theta_i(n))*exp(-1i*2*pi*k.'*delta_f*tau_i(n));
+end
 
-figure, hold on, grid on, plot((-NFFT/2:NFFT/2-1)*delta_f,20*log10(abs(H_real)))
+figure, hold on, plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_real(NFFT/2-floor(N_portadoras/2):NFFT/2+ceil(N_portadoras/2)-1))))
+
 
 h_real_tiempo = ifft(ifftshift(H_real),NFFT,1);
 
@@ -258,7 +264,7 @@ S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
 figure
 hold on
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx(:,1))))
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx)))
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
 legend('S_tx', 'S_tx(vhdl)')
 
