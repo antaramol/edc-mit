@@ -158,7 +158,8 @@ k = (-NFFT/2:NFFT/2-1);
 
 % H_real = zeros(NFFT,1);
 
-H_real = ((rho_i.*exp(-1i*theta_i)).'*(exp(-1i*2*pi*k*delta_f.*tau_i)))';
+H_real = ((rho_i.*exp(-1i*theta_i)).'*(exp(-1i*2*pi*k*delta_f.*tau_i))).';
+
 
 figure, hold on, grid on, plot((-NFFT/2:NFFT/2-1)*delta_f,20*log10(abs(H_real)))
 
@@ -219,22 +220,18 @@ title('Espectro OFDM')
 
 
 H_est = zeros(N_portadoras,1);
-% H_est(PLOC,1) = H_real(PLOC+NFFT/2-ceil(1705/2),1);
+
 H_est(PLOC,1) = ofdm_util_r(PLOC,1)./pilotos(:,1);
 
-% Interpolación lineal de H_est
-x = 1:12;
-for n = 1:N_pilotos-1 % ceil(PLOC/12)
-    b = H_est((n-1)*12+1);
-    a = (H_est(12*n+1) - H_est((n-1)*12+1))/12;
-    y = a*x + b;
-    H_est((n-1)*12+2:12*n+1) = y;
-end
 
-% guardar datos para vhdl
-writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
-writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
-% cargar entradas vhdl
+% Interpolación lineal de H_est
+xq = 1:1705;
+H_est= interp1(PLOC,H_est(PLOC,1),xq)';
+
+% % guardar datos para vhdl
+% writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
+% writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
+% % cargar entradas vhdl
 real_matrix_vhdl = readmatrix('salida_re.csv')';
 imag_matrix_vhdl = readmatrix('salida_im.csv')';
 H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
