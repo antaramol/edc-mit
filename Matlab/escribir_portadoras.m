@@ -1,9 +1,8 @@
-function escribir_portadoras(NUM_SYMB, SEED, CONSTEL, MODO, SNR, CP)
+function bits_tx = escribir_portadoras(NUM_SYMB, SEED, CONSTEL, MODO, SNR, CP)
     
     rng(SEED);
 
 
-    % Definición de la constelación
 switch MODO
     case '2K'
         N_portadoras = 1705;
