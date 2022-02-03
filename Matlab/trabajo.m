@@ -4,15 +4,19 @@ close all;
 %% Configuración del sistema OFDM
 NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
-CONSTEL = '64QAM';    % Constelación utilizada BPSK o QPSK
-MODO = '8K';
+CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
+MODO = '2K';
 SNR=200;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
 
 tic
 
 % Inicializamos el generador de números aleatorios con la semilla
-rng(SEED);
+
+%rng(SEED);
+
+%Octave
+rand("seed",SEED);
 
 % Definición de la constelación
 switch MODO
@@ -51,9 +55,9 @@ switch CONSTEL
         norma = sqrt(98);
 end
 
-scatterplot(C);
-grid
-title('Constelación')
+%scatterplot(C);
+%grid
+%title('Constelación')
 
 %% Transmisor
 % Generación de los bits a transmitir
@@ -71,9 +75,9 @@ end
 const_points = C(symb+1); % numbits/M x 1
 const_points = const_points./(norma);
 
-scatterplot(const_points);
-grid
-title('Constelación transmitida') 
+%scatterplot(const_points);
+%grid
+%title('Constelación transmitida') 
 
 % Símbolos OFDM en frecuencia (rejilla tiempo frecuencia)
 ofdm_freq = zeros(NFFT, NUM_SYMB); % NFFT x NUM_SYMB
@@ -254,45 +258,59 @@ H_est = interp1(PLOC,H_est(PLOC,1),xq).';
 
 
 % guardar datos para vhdl
-writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
-writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
+%writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
+%writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
+
+% Octave
+csvwrite('portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7))');
+csvwrite('portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7))');
 % cargar entradas vhdl
-% real_matrix_vhdl = readmatrix('salida_re.csv')';
-% imag_matrix_vhdl = readmatrix('salida_im.csv')';
-% H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
+%real_matrix_vhdl = readmatrix('salida_re.csv')';
+%imag_matrix_vhdl = readmatrix('salida_im.csv')';
+
+% Octave
+real_matrix_vhdl = csvread('salida_re.csv')';
+imag_matrix_vhdl = csvread('salida_im.csv')';
 
 
-figure(5)
+H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
+
+
+figure(3)
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
-%plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
-%legend('H real','H est', 'H(vhdl)')
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
+legend('H real','H est', 'H(vhdl)')
 
 
 % División en frecuencia Tx = Rx / H_est
 S_tx = ofdm_util_r./H_est;
-%S_tx = ofdm_util_r./H_est_vhdl;
+%S_tx_vhdl = ofdm_util_r./H_est_vhdl;
 
 % Comparamos con vhdl
 %rx_re = readmatrix('s_rx_re.csv')';
 %rx_im = readmatrix('s_rx_im.csv')';
 
-%S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
+%Octave
+rx_re = csvread('s_rx_re.csv')';
+rx_im = csvread('s_rx_im.csv')';
+
+S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
 figure
 hold on
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx(:,1))))
-%plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
-%legend('S_tx', 'S_tx(vhdl)')
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
+legend('S_tx', 'S_tx(vhdl)')
 
 % Quitamos los pilotos
 S_tx(PLOC,:) = []; 
-%S_tx_vhdl(PLOC,:) = []; 
+S_tx_vhdl(PLOC,:) = []; 
 
 % Concatenar los bits recibidos
-rx_constel = reshape(S_tx,(N_portadoras-N_pilotos)*NUM_SYMB,1).';
-%rx_constel = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
+%rx_constel = reshape(S_tx,(N_portadoras-N_pilotos)*NUM_SYMB,1).';
+rx_constel = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
 
-scatterplot(rx_constel);
+%scatterplot(rx_constel);
 
 % Demap
 switch CONSTEL
@@ -318,11 +336,11 @@ switch CONSTEL
         bits_rx(1:6:end) = abs(imag(rx_constel))<(6/norma) & abs(imag(rx_constel))>(2/norma);
 end
 
-BER = mean(xor(bits_rx, bits_tx.'));
-fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
-fprintf(1, 'BER = %f\n', BER);
-
-%BER_vhdl = mean(xor(bits_rx, bits_tx(1:NDATA*M).'));
+%BER = mean(xor(bits_rx, bits_tx.'));
 %fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
-%fprintf(1, 'BER_vhdl = %f\n', BER_vhdl);
+%fprintf(1, 'BER = %f\n', BER);
+
+BER_vhdl = mean(xor(bits_rx, bits_tx(1:NDATA*M).'));
+fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
+fprintf(1, 'BER_vhdl = %f\n', BER_vhdl);
 toc

@@ -28,7 +28,7 @@ architecture ecualizador_arch of ecualizador is
     signal reg, p_reg : registro_type  := (OTHERS => (others => '0'));
 
     signal a, b, c, d : signed(9 downto 0); -- A la salida del divisor
-    signal divisor : signed(26 downto 0);
+    signal divisor : signed(26 downto 0) := to_signed(1,27) ;
     signal dividendo_re, dividendo_im : signed(26 downto 0) := to_signed(0,27);
 
     signal x_aux_re, x_aux_im : signed(26 downto 0);
@@ -39,51 +39,66 @@ begin
 
     salida_valid <= H_valid;
 
-    -- a <= H_est.re;
-    -- b <= H_est.im;
-    -- c <= signed(reg(0)(19 downto 10));
-    -- d <= signed(reg(0)(9 downto 0));
+    a <= H_est.re;
+    b <= H_est.im;
+    c <= signed(reg(0)(19 downto 10));
+    d <= signed(reg(0)(9 downto 0));
+    
+    dividendo_re (26 downto 7) <= a*c + b*d;
+    dividendo_im (26 downto 7) <= b*c - a*d;
 
-    --dividendo_re <= a*c + b*d;
-    --dividendo_im <= b*c - a*d;
-
-    -- dividendo_re <= H_est.re * signed(reg(0)(19 downto 10)) + H_est.im * signed(reg(0)(9 downto 0));
-    -- dividendo_im <= H_est.im * signed(reg(0)(19 downto 10)) - H_est.re * signed(reg(0)(9 downto 0));
-
-    -- divisor <= to_signed(to_integer(H_est.re)**2 + to_integer(H_est.im)**2,20);
+    divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im;
 
     
     
     comb: process (all)
     begin
+      
+
       if (H_valid = '1') then
       
-        -- x_aux_re <= to_signed(to_integer(dividendo_re*(2**7)) / to_integer(divisor),10);
-        -- x_aux_im <= to_signed(to_integer(dividendo_im*(2**7)) / to_integer(divisor),10);
+      
+        -- a <= H_est.re;
+        -- b <= H_est.im;
+        -- c <= signed(reg(0)(19 downto 10));
+        -- d <= signed(reg(0)(9 downto 0));
 
+        -- dividendo_re (26 downto 7) <= a*c + b*d;
+        -- dividendo_im (26 downto 7) <= b*c - a*d;
 
-        a <= H_est.re;
-        b <= H_est.im;
-        c <= signed(reg(0)(19 downto 10));
-        d <= signed(reg(0)(9 downto 0));
+        -- divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im;
+        --divisor (26 downto 20) <= (OTHERS => '0');
 
-        dividendo_re (26 downto 7) <= a*c + b*d;
-        dividendo_im (26 downto 7) <= b*c - c*d;
+        if (divisor = 0) then 
+          if dividendo_im = to_signed(0,27) then 
+            x_aux_im <= to_signed(0,27);
+          elsif dividendo_im = to_signed(0,27) then 
+            x_aux_im <= to_signed(-512,27);
+          else
+            x_aux_im <= to_signed(511,27);
+          end if;
 
-        divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im;
-        divisor (26 downto 20) <= (OTHERS => '0');
-
-        x_aux_re <= dividendo_re / divisor;
-        x_aux_im <= dividendo_im / divisor;
+          if dividendo_re = to_signed(0,27) then 
+            x_aux_re <= to_signed(0,27);
+          elsif dividendo_im = to_signed(0,27) then 
+            x_aux_re <= to_signed(-512,27);
+          else
+            x_aux_re <= to_signed(511,27);
+          end if;
+          
+        else
+          x_aux_re <= dividendo_re / divisor;
+          x_aux_im <= dividendo_im / divisor;
+        end if;
         
       else
-        a <= to_signed(0,10);
-        b <= to_signed(0,10);
-        c <= to_signed(0,10);
-        d <= to_signed(0,10);
-        dividendo_re <= to_signed(0,27);
-        dividendo_im <= to_signed(0,27);
-        divisor <= to_signed(1,27);
+        -- a <= to_signed(0,10);
+        -- b <= to_signed(0,10);
+        -- c <= to_signed(0,10);
+        -- d <= to_signed(0,10);
+        -- dividendo_re <= to_signed(0,27);
+        -- dividendo_im <= to_signed(0,27);
+        --divisor <= to_signed(1,27);
         x_aux_re <= to_signed(0,27);
         x_aux_im <= to_signed(0,27);
       end if;

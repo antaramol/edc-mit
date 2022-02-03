@@ -67,6 +67,7 @@ begin
           i := to_unsigned(12,5);
 
         WHEN espera_escritura =>
+          en_PRBS <= '1';
 
         WHEN actualizar_salidas =>
           en_PRBS <= '1';
@@ -90,9 +91,10 @@ begin
            end if;   
 
         WHEN esperar_interpol =>
-           
+        en_PRBS <= '1';
         
         WHEN ultima_port =>
+          en_PRBS <= '1';
           ultima_portadora <= '1';
           
           

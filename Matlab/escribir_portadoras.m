@@ -1,6 +1,6 @@
 function bits_tx = escribir_portadoras(NUM_SYMB, SEED, CONSTEL, MODO, SNR, CP)
     
-    rng(SEED);
+    rand("seed",SEED);
 
 
 switch MODO
@@ -160,7 +160,7 @@ ofdm_util_r =ofdm_freq_r(ceil((NFFT-N_portadoras)/2)+(1:N_portadoras),:);
 
 
 % guardar datos para vhdl
-writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
-writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
+csvwrite('portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7)));
+csvwrite('portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7)));
 
 end

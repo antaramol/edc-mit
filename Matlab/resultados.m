@@ -15,8 +15,8 @@ PLOC=1:12:N_portadoras;
 
 
 % cargar entradas vhdl
-rx_re = readmatrix('s_rx_re.csv')';
-rx_im = readmatrix('s_rx_im.csv')';
+rx_re = csvread('../Matlab/s_rx_re.csv')';
+rx_im = csvread('../Matlab/s_rx_im.csv')';
 
 S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
@@ -54,6 +54,6 @@ switch CONSTEL
         M='6';
 end
 
-BER = mean(xor(bits_rx, bits_tx(1:NDATA*M).'));
+BER = mean(xor(bits_rx, bits_tx(1:size(bits_rx).')));
 
 end
