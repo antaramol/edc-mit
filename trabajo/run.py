@@ -8,9 +8,9 @@ oc.addpath('../Matlab')
 
 print("Trabajo final")
 
-NUM_SYMB = 1    # Número de símbols a transmitir
+NUM_SYMB = 10    # Número de símbols a transmitir
 SEED=100;            # Semilla para el generador de números aleatorios
-CONSTEL = '64QAM';    # Constelación utilizada BPSK o QPSK
+CONSTEL = 'QPSK';    # Constelación utilizada BPSK o QPSK
 MODO = '2K'
 SNR=200;             #SNR en dB
 CP = 1/32; 
