@@ -8,14 +8,15 @@ oc.addpath('../Matlab')
 
 print("Trabajo final")
 
-NUM_SYMB = 10    # Número de símbols a transmitir
+#NUM_SYMB = 10    # Número de símbols a transmitir
 SEED=100;            # Semilla para el generador de números aleatorios
 CONSTEL = 'QPSK';    # Constelación utilizada BPSK o QPSK
 MODO = '2K'
 SNR=200;             #SNR en dB
 CP = 1/32; 
 
-bits_tx = oc.escribir_portadoras(NUM_SYMB, SEED, CONSTEL, MODO, SNR, CP)
+bits_tx = oc.escribir_portadoras(SEED, CONSTEL, MODO, SNR, CP)
+np.savetxt('../Matlab/bits_tx.csv',bits_tx,delimiter=',')
 
 # Create VUnit instance by parsing command-line arguments
 vu = VUnit.from_argv()

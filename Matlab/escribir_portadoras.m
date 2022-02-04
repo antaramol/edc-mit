@@ -1,5 +1,6 @@
-function bits_tx = escribir_portadoras(NUM_SYMB, SEED, CONSTEL, MODO, SNR, CP)
+function bits_tx = escribir_portadoras(SEED, CONSTEL, MODO, SNR, CP)
     
+    NUM_SYMB = 1; % Para comprobación con vhdl solo un símbolo
     rand("seed",SEED);
 
 
