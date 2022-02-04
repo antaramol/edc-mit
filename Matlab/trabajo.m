@@ -2,8 +2,8 @@ clear;
 close all;
 %% comentario
 %% Configuración del sistema OFDM
-NUM_SYMB = 10;       % Número de símbols a transmitir
-SEED=100;            % Semilla para el generador de números aleatorios
+NUM_SYMB = 1;       % Número de símbols a transmitir
+%SEED=100;            % Semilla para el generador de números aleatorios
 CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
 MODO = '2K';
 SNR=200;             %SNR en dB
@@ -13,7 +13,7 @@ tic
 
 % Inicializamos el generador de números aleatorios con la semilla
 
-rng(SEED);
+%rng(SEED);
 
 % Definición de la constelación
 switch MODO
@@ -59,7 +59,8 @@ title('Constelación')
 %% Transmisor
 % Generación de los bits a transmitir
 numbits = NUM_SYMB*NDATA*M;
-bits_tx = rand(numbits, 1)>0.5; % numbits x 1
+%bits_tx = rand(numbits, 1)>0.5; % numbits x 1
+bits_tx = readmatrix("bits_tx.csv");
 
 % Bits to symbols
 aux  = reshape(bits_tx, M, []).'; % numbits/M x M
