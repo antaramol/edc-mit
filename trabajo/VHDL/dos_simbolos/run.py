@@ -29,7 +29,12 @@ vu = VUnit.from_argv()
 lib = vu.add_library("src_lib")
 
 # Add all files ending in .vhd in current working directory to our library 'src_lib'
-lista = ["*.vhd"]
+lista = ["edc_common.vhd","top_level.vhd", "contador.vhd", "prbs.vhd", "interpolator.vhd", 
+    "ecualizador.vhd", "FSM.vhd", "estimador.vhd",
+    "tb_top.vhd", 
+    "tb_estimador.vhd",
+    "tb_prbs.vhd","tb_interpolador.vhd","tb_contador.vhd"
+    ]
 
 lib.add_source_files(lista)
 
@@ -64,12 +69,18 @@ def post_func(results):
     S_tx_vhdl = replaceZeros(S_tx_vhdl)
 
     plt.figure()
-    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx)))
-    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx_vhdl)))
+    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx[:,0])))
+    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx_vhdl[:,0])))
     plt.grid()
-    plt.title('Símbolo recibido')
+    plt.title('Primer símbolo')
     plt.legend(['S_tx', 'S_tx(vhdl)'])
 
+    plt.figure()
+    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx[:,1])))
+    plt.plot(np.linspace(-np.floor((N_portadoras-N_pilotos)/2),np.floor((N_portadoras-N_pilotos)/2)-1,N_portadoras-N_pilotos),20*np.log10(np.abs(S_tx_vhdl[:,1])))
+    plt.grid()
+    plt.title('Segundo símbolo')
+    plt.legend(['S_tx', 'S_tx(vhdl)'])
 
     plt.figure()
     plt.scatter(np.real(rx_constel),np.imag(rx_constel))
