@@ -34,10 +34,6 @@ NCP = NFFT*CP;          % Número de muestras del prefijo cíclico
 PLOC=1:12:N_portadoras;
 
 switch CONSTEL
-    case 'BPSK'
-        M=1;
-        C=[1 -1];
-        norma = sqrt(2);
     case 'QPSK'
         C=[1+1i 1-1i -1+1i -1-1i];
         M=2;      
@@ -283,8 +279,6 @@ rx_constel_vhdl = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
 
 % Demap
 switch CONSTEL
-    case 'BPSK'
-        bits_rx = rx_constel<0;
     case 'QPSK'
         bits_rx = zeros(1,length(rx_constel)*2);
         bits_rx(2:2:end) = real(rx_constel)<0;
@@ -311,8 +305,6 @@ fprintf(1, 'BER = %f\n', BER);
 
 %Ahora el vector de vhdl
 switch CONSTEL
-    case 'BPSK'
-        bits_rx = rx_constel<0;
     case 'QPSK'
         bits_rx = zeros(1,length(rx_constel_vhdl)*2);
         bits_rx(2:2:end) = real(rx_constel_vhdl)<0;

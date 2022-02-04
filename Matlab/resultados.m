@@ -39,8 +39,6 @@ rx_constel = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
 
 % Demap
 switch CONSTEL
-    case 'BPSK'
-        bits_rx = rx_constel<0;
     case 'QPSK'
         bits_rx = zeros(1,length(rx_constel)*2);
         bits_rx(2:2:end) = real(rx_constel)<0;

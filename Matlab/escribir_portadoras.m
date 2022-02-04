@@ -22,10 +22,6 @@ NCP = NFFT*CP;          % Número de muestras del prefijo cíclico
 PLOC=1:12:N_portadoras;
 
 switch CONSTEL
-    case 'BPSK'
-        M=1;
-        C=[1 -1];
-        norma = sqrt(2);
     case 'QPSK'
         C=[1+1i 1-1i -1+1i -1-1i];
         M=2;      
