@@ -27,8 +27,8 @@ lib = vu.add_library("src_lib")
 lista = ["edc_common.vhd","top_level.vhd", "contador.vhd", "prbs.vhd", "interpolator.vhd", 
     "ecualizador.vhd", "FSM.vhd","top_contador_memoria.vhd","dpram.vhd",
     "tb_top.vhd", 
-    #"estimador.vhd",
-    #"tb_estimador.vhd",
+    "estimador.vhd",
+    "tb_estimador.vhd",
     #"tb_prbs.vhd"
     ]
 
