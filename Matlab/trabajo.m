@@ -2,9 +2,9 @@ clear;
 close all;
 %% comentario
 %% Configuración del sistema OFDM
-NUM_SYMB = 1;       % Número de símbols a transmitir
+NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
-CONSTEL = '64QAM';    % Constelación utilizada BPSK o QPSK
+CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
 MODO = '2K';
 SNR=200;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
@@ -13,10 +13,7 @@ tic
 
 % Inicializamos el generador de números aleatorios con la semilla
 
-%rng(SEED);
-
-%Octave
-rand("seed",SEED);
+rng(SEED);
 
 % Definición de la constelación
 switch MODO
@@ -55,9 +52,9 @@ switch CONSTEL
         norma = sqrt(98);
 end
 
-%scatterplot(C);
-%grid
-%title('Constelación')
+scatterplot(C);
+grid
+title('Constelación')
 
 %% Transmisor
 % Generación de los bits a transmitir
@@ -75,9 +72,9 @@ end
 const_points = C(symb+1); % numbits/M x 1
 const_points = const_points./(norma);
 
-%scatterplot(const_points);
-%grid
-%title('Constelación transmitida') 
+scatterplot(const_points);
+grid
+title('Constelación transmitida') 
 
 % Símbolos OFDM en frecuencia (rejilla tiempo frecuencia)
 ofdm_freq = zeros(NFFT, NUM_SYMB); % NFFT x NUM_SYMB
@@ -127,7 +124,7 @@ legend('real', 'imag');
 grid
 title('Señal OFDM en el tiempo')
 
-% Espectro de la señal transmitida
+%Espectro de la señal transmitida
 % figure
 % pwelch(tx);
 
@@ -165,17 +162,6 @@ theta_i = parametros(:,3);
 delta_f = 1/T_U;
 k = (-NFFT/2:NFFT/2-1);
 
-% H_real = zeros(NFFT,1);
-% for n= 1:2048
-%     H_real(n,1) = sum(rho_i.*exp(-1i*theta_i).*exp(-1i*2*pi*k(n)*delta_f*tau_i));
-% end
-
-% for n = 1:20
-%     H_real = H_real + rho_i(n)*exp(-1i*theta_i(n))*exp(-1i*2*pi*k.'*delta_f*tau_i(n));
-% end
-% 
-% figure, hold on, plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_real(NFFT/2-floor(N_portadoras/2):NFFT/2+ceil(N_portadoras/2)-1))))
-
 
 H_real = ((rho_i.*exp(-1i*theta_i)).'*(exp(-1i*2*pi*k*delta_f.*tau_i))).';
 
@@ -205,15 +191,10 @@ nsr = 10^(-SNR/10);      % Pn/Ps
 
 noise = (randn(size(tx))+1i*randn(size(tx))) / sqrt(2); % Ruido complejo de potencia 1
 noise = sqrt(Ps*nsr).*noise; % Ruido complejo de potencia Ps*snr
-% Alternativa a las dos líneas anteriores:
-% noise = wgn(size(tx,1), 1, Ps*nsr, 'complex');
 
 rx = rx_antena+noise;
 %rx = rx_antena;
 
-% Return termina la ejecución del script. Las líneas de después no se
-% ejecutarán
-% return
 
 
 %% Receptor
@@ -240,7 +221,7 @@ title('Espectro OFDM')
 
 
 H_est = zeros(N_portadoras,1);
-% H_est(PLOC,1) = H_real(PLOC+NFFT/2-ceil(1705/2),1);
+
 H_est(PLOC,1) = ofdm_util_r(PLOC,1)./pilotos(PLOC,1);
 
 xq = 1:N_portadoras;
@@ -256,27 +237,15 @@ H_est = interp1(PLOC,H_est(PLOC,1),xq).';
 % end
 
 
-
-% guardar datos para vhdl
-%writematrix(real(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_re.csv');
-%writematrix(imag(int32(ofdm_util_r(:,1)*2^7)), 'portadoras_im.csv');
-
-% Octave
-%csvwrite('portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7))');
-%csvwrite('portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7))');
-% cargar entradas vhdl
-%real_matrix_vhdl = readmatrix('salida_re.csv')';
-%imag_matrix_vhdl = readmatrix('salida_im.csv')';
-
-% Octave
-real_matrix_vhdl = csvread('estim_re.csv')';
-imag_matrix_vhdl = csvread('estim_im.csv')';
+% cargar entradas vhdl de la estimación del canal
+real_matrix_vhdl = readmatrix('estim_re.csv')';
+imag_matrix_vhdl = readmatrix('estim_im.csv')';
 
 
 H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
 
 
-figure(3)
+figure(5)
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
 legend('H real','H est', 'H(vhdl)')
@@ -284,15 +253,13 @@ legend('H real','H est', 'H(vhdl)')
 
 % División en frecuencia Tx = Rx / H_est
 S_tx = ofdm_util_r./H_est;
-%S_tx_vhdl = ofdm_util_r./H_est_vhdl;
+%S_tx_vhdl = ofdm_util_r./H_est_vhdl; %Se podría usar, pero leemos las
+%salidas del bloque con ecualizador
 
 % Comparamos con vhdl
-%rx_re = readmatrix('s_rx_re.csv')';
-%rx_im = readmatrix('s_rx_im.csv')';
+rx_re = readmatrix('s_rx_re.csv')';
+rx_im = readmatrix('s_rx_im.csv')';
 
-%Octave
-rx_re = csvread('s_rx_re.csv')';
-rx_im = csvread('s_rx_im.csv')';
 
 S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
@@ -303,8 +270,8 @@ S_tx_vhdl(PLOC,:) = [];
 
 figure
 hold on
-plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(imag(S_tx(:,1))))
-plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(imag(S_tx_vhdl)))
+plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(abs(S_tx(:,1))))
+plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
 legend('S_tx', 'S_tx(vhdl)')
 
 % Concatenar los bits recibidos
