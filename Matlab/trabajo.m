@@ -296,15 +296,16 @@ rx_im = csvread('s_rx_im.csv')';
 
 S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
-figure
-hold on
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(real(S_tx(:,1))))
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(real(S_tx_vhdl)))
-legend('S_tx', 'S_tx(vhdl)')
 
 % Quitamos los pilotos
 S_tx(PLOC,:) = []; 
 S_tx_vhdl(PLOC,:) = []; 
+
+figure
+hold on
+plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(imag(S_tx(:,1))))
+plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(imag(S_tx_vhdl)))
+legend('S_tx', 'S_tx(vhdl)')
 
 % Concatenar los bits recibidos
 %rx_constel = reshape(S_tx,(N_portadoras-N_pilotos)*NUM_SYMB,1).';
@@ -340,7 +341,7 @@ end
 %fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
 %fprintf(1, 'BER = %f\n', BER);
 
-BER_vhdl = mean(xor(bits_rx, bits_tx(1:NDATA*M).'));
+BER_vhdl = mean(xor(bits_rx, bits_tx(1:length(bits_rx)).'));
 fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
 fprintf(1, 'BER_vhdl = %f\n', BER_vhdl);
 toc

@@ -160,7 +160,7 @@ ofdm_util_r =ofdm_freq_r(ceil((NFFT-N_portadoras)/2)+(1:N_portadoras),:);
 
 
 % guardar datos para vhdl
-csvwrite('portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7)));
-csvwrite('portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7)));
+csvwrite('../Matlab/portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7)));
+csvwrite('../Matlab/portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7)));
 
 end

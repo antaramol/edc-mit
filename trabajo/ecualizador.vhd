@@ -45,7 +45,7 @@ begin
     d <= signed(reg(0)(9 downto 0));
     
     dividendo_re (26 downto 7) <= a*c + b*d;
-    dividendo_im (26 downto 7) <= b*c - a*d;
+    dividendo_im (26 downto 7) <= a*d - b*c;
 
     divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im;
 
