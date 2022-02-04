@@ -13,8 +13,8 @@ print("Trabajo final")
 SEED=100;            # Semilla para el generador de números aleatorios
 CONSTEL = '64QAM';    # Constelación utilizada BPSK o QPSK
 MODO = '8K'
-SNR=100;             #SNR en dB
-CP = 1/16; 
+SNR=20;             #SNR en dB
+CP = 1/32; 
 
 [bits_tx, N_portadoras, NFFT, const_points, H_real, H_est, S_tx] = oc.escribir_portadoras(SEED, CONSTEL, MODO, SNR, CP,nout=7)
 #np.savetxt('../Matlab/bits_tx.csv',bits_tx,delimiter=',')
