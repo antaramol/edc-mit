@@ -1,4 +1,4 @@
-function BER = resultados(CONSTEL, MODO, bits_tx)
+function [H_est_vhdl, S_tx_vhdl, rx_constel, bits_rx] = resultados(CONSTEL, MODO)
 
 
 switch MODO
@@ -12,6 +12,14 @@ N_pilotos = ceil(N_portadoras/12);
 
 NDATA=N_portadoras- N_pilotos;  
 PLOC=1:12:N_portadoras;
+
+
+% cargar entradas vhdl de la estimación del canal
+real_matrix_vhdl = csvread('../Matlab/estim_re.csv')';
+imag_matrix_vhdl = csvread('../Matlab/estim_im.csv')';
+
+
+H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
 
 
 rx_re = csvread('../Matlab/s_rx_re.csv')';
@@ -55,7 +63,5 @@ switch CONSTEL
         bits_rx(1:6:end) = abs(imag(rx_constel))<(6/norma) & abs(imag(rx_constel))>(2/norma);
 end
 
-
-BER = mean(xor(bits_rx, bits_tx(1:length(bits_rx)).'));
 
 end

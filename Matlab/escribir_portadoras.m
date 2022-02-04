@@ -1,4 +1,4 @@
-function bits_tx = escribir_portadoras(SEED, CONSTEL, MODO, SNR, CP)
+function [bits_tx, N_portadoras, NFFT, const_points, H_real, H_est, S_tx] = escribir_portadoras(SEED, CONSTEL, MODO, SNR, CP)
     
     NUM_SYMB = 1; % Para comprobación con vhdl solo un símbolo
     rand("seed",SEED);
@@ -163,5 +163,16 @@ ofdm_util_r =ofdm_freq_r(ceil((NFFT-N_portadoras)/2)+(1:N_portadoras),:);
 % guardar datos para vhdl
 csvwrite('../Matlab/portadoras_re.csv', int32(real(ofdm_util_r(:,1)*2^7)));
 csvwrite('../Matlab/portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7)));
+
+
+H_est = zeros(N_portadoras,1);
+
+H_est(PLOC,1) = ofdm_util_r(PLOC,1)./pilotos(PLOC,1);
+
+xq = 1:N_portadoras;
+H_est = interp1(PLOC,H_est(PLOC,1),xq).';
+
+S_tx = ofdm_util_r./H_est;
+S_tx(PLOC,:) = []; 
 
 end
