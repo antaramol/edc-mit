@@ -13,17 +13,17 @@ end prbs;
 
 architecture prbs_arch of prbs is
 
-  signal reg, p_reg : std_ulogic_vector(11 downto 1);
+  signal reg, p_reg : std_ulogic_vector(10 downto 0);
 
 begin
 
-  signo <= reg(1);
+  signo <= reg(0);
 
-  comb: process (ena,reg)
+  comb: process (all)
   begin
     if ena='1' then
-      p_reg(11) <= reg(1) XOR reg(3); 
-      p_reg(10 downto 1) <= reg(11 downto 2);
+      p_reg(10) <= reg(0) XOR reg(2); 
+      p_reg(9 downto 0) <= reg(10 downto 1);
     else
       p_reg <= reg;  
     end if;  
@@ -33,7 +33,7 @@ begin
   sinc: process (rst, clk)
   begin
     if rst = '1' then
-      reg <= (others => '1');
+      reg <= (10 => '0',others => '1');
     elsif rising_edge(clk) then
       reg <= p_reg;
     end if;

@@ -2,7 +2,7 @@ clear;
 close all;
 %% comentario
 %% Configuración del sistema OFDM
-NUM_SYMB = 10;       % Número de símbols a transmitir
+NUM_SYMB = 1;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
 CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
 MODO = '2K';
@@ -269,8 +269,8 @@ csvwrite('portadoras_im.csv', int32(imag(ofdm_util_r(:,1)*2^7))');
 %imag_matrix_vhdl = readmatrix('salida_im.csv')';
 
 % Octave
-real_matrix_vhdl = csvread('salida_re.csv')';
-imag_matrix_vhdl = csvread('salida_im.csv')';
+real_matrix_vhdl = csvread('estim_re.csv')';
+imag_matrix_vhdl = csvread('estim_im.csv')';
 
 
 H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
@@ -298,8 +298,8 @@ S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
 figure
 hold on
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx(:,1))))
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(real(S_tx(:,1))))
+plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(real(S_tx_vhdl)))
 legend('S_tx', 'S_tx(vhdl)')
 
 % Quitamos los pilotos

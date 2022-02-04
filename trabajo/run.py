@@ -8,7 +8,7 @@ oc.addpath('../Matlab')
 
 print("Trabajo final")
 
-NUM_SYMB = 10     # Número de símbols a transmitir
+NUM_SYMB = 1    # Número de símbols a transmitir
 SEED=100;            # Semilla para el generador de números aleatorios
 CONSTEL = 'QPSK';    # Constelación utilizada BPSK o QPSK
 MODO = '2K'
@@ -25,7 +25,7 @@ lib = vu.add_library("src_lib")
 
 # Add all files ending in .vhd in current working directory to our library 'src_lib'
 lista = ["edc_common.vhd","top_level.vhd", "contador.vhd", "prbs.vhd", "interpolator.vhd", 
-    "ecualizador.vhd", "FSM.vhd","tb_top.vhd"]
+    "ecualizador.vhd", "FSM.vhd","top_contador_memoria.vhd","dpram.vhd","tb_top.vhd", "estimador.vhd","tb_estimador.vhd","tb_prbs.vhd"]
 
 lib.add_source_files(lista)
 

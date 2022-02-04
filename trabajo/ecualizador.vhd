@@ -70,6 +70,7 @@ begin
         --divisor (26 downto 20) <= (OTHERS => '0');
 
         if (divisor = 0) then 
+          
           if dividendo_im = to_signed(0,27) then 
             x_aux_im <= to_signed(0,27);
           elsif dividendo_im = to_signed(0,27) then 
