@@ -3,17 +3,17 @@ close all;
 %% comentario
 %% Configuración del sistema OFDM
 NUM_SYMB = 1;       % Número de símbols a transmitir
-%SEED=100;            % Semilla para el generador de números aleatorios
-CONSTEL = 'QPSK';    % Constelación utilizada BPSK o QPSK
-MODO = '2K';
-SNR=200;             %SNR en dB
+SEED=100;            % Semilla para el generador de números aleatorios
+CONSTEL = '64QAM';    % Constelación utilizada BPSK o QPSK
+MODO = '8K';
+SNR=20;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
 
 tic
 
 % Inicializamos el generador de números aleatorios con la semilla
 
-%rng(SEED);
+rng(SEED);
 
 % Definición de la constelación
 switch MODO
@@ -55,8 +55,7 @@ title('Constelación')
 %% Transmisor
 % Generación de los bits a transmitir
 numbits = NUM_SYMB*NDATA*M;
-%bits_tx = rand(numbits, 1)>0.5; % numbits x 1
-bits_tx = readmatrix("bits_tx.csv");
+bits_tx = rand(numbits, 1)>0.5; % numbits x 1
 
 % Bits to symbols
 aux  = reshape(bits_tx, M, []).'; % numbits/M x M
@@ -162,7 +161,7 @@ k = (-NFFT/2:NFFT/2-1);
 
 H_real = ((rho_i.*exp(-1i*theta_i)).'*(exp(-1i*2*pi*k*delta_f.*tau_i))).';
 
-figure, hold on, grid on, plot((-NFFT/2:NFFT/2-1)*delta_f,20*log10(abs(H_real)))
+% Se representa más adelante
 
 h_real_tiempo = ifft(ifftshift(H_real),NFFT,1);
 
@@ -234,48 +233,28 @@ H_est = interp1(PLOC,H_est(PLOC,1),xq).';
 % end
 
 
-% cargar entradas vhdl de la estimación del canal
-real_matrix_vhdl = readmatrix('estim_re.csv')';
-imag_matrix_vhdl = readmatrix('estim_im.csv')';
-
-
-H_est_vhdl = double(real_matrix_vhdl)/2^7 + 1i*double(imag_matrix_vhdl)/2^7;
-
-
-figure(5)
+figure, hold on, grid on, plot((-NFFT/2:NFFT/2-1)*delta_f,20*log10(abs(H_real)))
 plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est)))
-plot((-floor(N_portadoras/2):ceil(N_portadoras/2)-1)*delta_f,20*log10(abs(H_est_vhdl)))
-legend('H real','H est', 'H(vhdl)')
+legend('H real','H est')
 
 
 % División en frecuencia Tx = Rx / H_est
 S_tx = ofdm_util_r./H_est;
-%S_tx_vhdl = ofdm_util_r./H_est_vhdl; %Se podría usar, pero leemos las
 %salidas del bloque con ecualizador
-
-% Comparamos con vhdl
-rx_re = readmatrix('s_rx_re.csv')';
-rx_im = readmatrix('s_rx_im.csv')';
-
-
-S_tx_vhdl = rx_re/2^7 + 1i*rx_im/2^7;
 
 
 % Quitamos los pilotos
 S_tx(PLOC,:) = []; 
-S_tx_vhdl(PLOC,:) = []; 
 
 figure
 hold on
 plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(abs(S_tx(:,1))))
-plot((-floor((N_portadoras-N_pilotos)/2):ceil((N_portadoras-N_pilotos)/2)-1)*delta_f,20*log10(abs(S_tx_vhdl)))
-legend('S_tx', 'S_tx(vhdl)')
+legend('S_tx')
 
 % Concatenar los bits recibidos
 rx_constel = reshape(S_tx,(N_portadoras-N_pilotos)*NUM_SYMB,1).';
-rx_constel_vhdl = reshape(S_tx_vhdl,(N_portadoras-N_pilotos),1).';
 
-%scatterplot(rx_constel);
+scatterplot(rx_constel);
 
 % Demap
 switch CONSTEL
@@ -303,29 +282,5 @@ BER = mean(xor(bits_rx, bits_tx.'));
 fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
 fprintf(1, 'BER = %f\n', BER);
 
-%Ahora el vector de vhdl
-switch CONSTEL
-    case 'QPSK'
-        bits_rx = zeros(1,length(rx_constel_vhdl)*2);
-        bits_rx(2:2:end) = real(rx_constel_vhdl)<0;
-        bits_rx(1:2:end) = imag(rx_constel_vhdl)<0;
-    case '16QAM'
-        bits_rx = zeros(1,length(rx_constel_vhdl)*4);
-        bits_rx(4:4:end) = real(rx_constel_vhdl)<0;
-        bits_rx(3:4:end) = imag(rx_constel_vhdl)<0;
-        bits_rx(2:4:end) = abs(real(rx_constel_vhdl))<(2/norma);
-        bits_rx(1:4:end) = abs(imag(rx_constel_vhdl))<(2/norma);
-    case '64QAM'
-        bits_rx = zeros(1,length(rx_constel_vhdl)*6);
-        bits_rx(6:6:end) = real(rx_constel_vhdl)<0;
-        bits_rx(5:6:end) = imag(rx_constel_vhdl)<0;
-        bits_rx(4:6:end) = abs(real(rx_constel_vhdl))<(4/norma);
-        bits_rx(3:6:end) = abs(imag(rx_constel_vhdl))<(4/norma);
-        bits_rx(2:6:end) = abs(real(rx_constel_vhdl))<(6/norma) & abs(real(rx_constel_vhdl))>(2/norma);
-        bits_rx(1:6:end) = abs(imag(rx_constel_vhdl))<(6/norma) & abs(imag(rx_constel_vhdl))>(2/norma);
-end
 
-BER_vhdl = mean(xor(bits_rx, bits_tx(1:length(bits_rx)).'));
-fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
-fprintf(1, 'BER_vhdl = %f\n', BER_vhdl);
 toc
