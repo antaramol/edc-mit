@@ -26,3 +26,17 @@ test_trabajo_general:
     reports:
       junit:
         - trabajo/VHDL/general/test_output.xml
+
+test_2_simbolos:
+  stage: test
+  image: registry.gitlab.com/hgpub/fosshdl-dist:edc
+  script:
+    - cd trabajo/VHDL/dos_simbolos
+    - python3 run.py --xunit-xml test_output.xml
+  artifacts:
+    when: always
+    paths:
+      - trabajo/VHDL/dos_simbolos/test_output.xml
+    reports:
+      junit:
+        - trabajo/VHDL/dos_simbolos/test_output.xml
