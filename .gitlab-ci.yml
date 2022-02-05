@@ -1,0 +1,28 @@
+# List of stages, in order of execution
+stages:
+  - test
+
+# Common commands to be executed before each job
+before_script:
+  - source /home/salas/fosshdl/env.rc
+
+# Each job:
+#   - belongs to a stage
+#   - runs inside a docker image (which in our case contains all the software we need)
+#   - has a script with the commands to execute
+#   - generates artifacts which can be used by other jobs and downloaded by the user
+#   - one of those artifacts is the xml report in JUnit format, which is read by gitlab
+test_trabajo_general:
+  stage: test
+  image: registry.gitlab.com/hgpub/fosshdl-dist:edc
+  script:
+    - cd trabajo/VHDL/general
+    - python3 run.py --xunit-xml test_output.xml
+  artifacts:
+    when: always
+    paths:
+      - trabajo/VHDL/general/coverage_report
+      - trabajo/VHDL/general/test_output.xml
+    reports:
+      junit:
+        - trabajo/VHDL/general/test_output.xml
