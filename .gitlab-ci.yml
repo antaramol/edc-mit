@@ -19,10 +19,11 @@ test_trabajo_general:
     - cd trabajo/VHDL/general
     - python3 run.py --xunit-xml test_output.xml
     - gcovr -r . --xml -o coverage.xml
+    - gcovr -r . --html -o index.html.html
   artifacts:
     when: always
     paths:
-      - trabajo/VHDL/general/coverage.xml
+      - trabajo/VHDL/general/coverage_report
       - trabajo/VHDL/general/test_output.xml
     reports:
       junit:
