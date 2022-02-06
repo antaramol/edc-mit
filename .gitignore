@@ -1,5 +1,6 @@
 # Build and Release Folders
 vunit_out/
+coverage_data/
 
 # Other files and folders
 

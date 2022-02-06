@@ -3,6 +3,8 @@ import numpy as np
 import oct2py
 import matplotlib.pyplot as plt
 
+from subprocess import call
+
 oc = oct2py.Oct2Py()
 oc.addpath('Matlab')
 
@@ -25,6 +27,9 @@ N_pilotos = int(np.ceil(N_portadoras/12))
 # Create VUnit instance by parsing command-line arguments
 vu = VUnit.from_argv()
 
+# Enable OSVVM (Open Source VHDL Verification Methology)2
+vu.add_osvvm()
+
 # Create library 'src_lib', where our files will be compiled
 lib = vu.add_library("src_lib")
 
@@ -34,7 +39,20 @@ lista = ["*.vhd"]
 lib.add_source_files(lista)
 
 
+# Enable code coverage collection
+lib.set_sim_option("enable_coverage", True)
+lib.set_compile_option("enable_coverage", True)
+
+
 def post_func(results):
+
+    results.merge_coverage(file_name="coverage_data")
+    if vu.get_simulator_name() == "ghdl":
+        call(["gcovr", "coverage_data"])
+        call(["lcov", '--capture', '--directory', '.', '--output', 'coverage.info'])
+        call(["genhtml", "coverage.info", "--output-directory", "coverage_report"])
+
+        
     [H_est_vhdl, S_tx_vhdl, rx_constel, bits_rx_vhdl] = oc.resultados(CONSTEL, MODO, nout=4)
     BER = np.mean(np.logical_xor(bits_tx, np.transpose(bits_rx_vhdl)))
    
