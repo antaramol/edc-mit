@@ -18,15 +18,16 @@ test_trabajo_general:
   script:
     - cd trabajo/VHDL/general
     - python3 run.py --xunit-xml test_output.xml
+    - gcovr -r . --xml -o coverage.xml
   artifacts:
     when: always
     paths:
-      - trabajo/VHDL/general/coverage_report/general
+      - trabajo/VHDL/general/coverage.xml
       - trabajo/VHDL/general/test_output.xml
     reports:
       junit:
         - trabajo/VHDL/general/test_output.xml
-        - trabajo/VHDL/general/coverage_report/index.html
+        - trabajo/VHDL/general/coverage.xml
 
 test_2_simbolos:
   stage: test
