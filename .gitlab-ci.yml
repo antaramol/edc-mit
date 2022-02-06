@@ -27,7 +27,6 @@ test_trabajo_general:
     reports:
       junit:
         - trabajo/VHDL/general/test_output.xml
-        - trabajo/VHDL/general/coverage.xml
 
 test_2_simbolos:
   stage: test
