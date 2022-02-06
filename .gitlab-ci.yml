@@ -21,11 +21,12 @@ test_trabajo_general:
   artifacts:
     when: always
     paths:
-      - trabajo/VHDL/general/coverage_report
+      - trabajo/VHDL/general/coverage_report/general
       - trabajo/VHDL/general/test_output.xml
     reports:
       junit:
         - trabajo/VHDL/general/test_output.xml
+	- trabajo/VHDL/general/coverage_report/index.html
 
 test_2_simbolos:
   stage: test
