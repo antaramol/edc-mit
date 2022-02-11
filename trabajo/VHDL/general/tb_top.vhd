@@ -31,8 +31,7 @@ architecture bench of top_level_tb is
   signal clk : std_logic;
   signal y : std_logic_vector (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
   signal y_valid : std_logic := '0';
-  -- signal estim : complex10;
-  -- signal estim_valid : std_logic;
+
   signal y_re_s, y_im_s : std_logic_vector(9 downto 0);
   signal address, p_address : unsigned (ADDR_WIDTH-1 downto 0) := to_unsigned(0,ADDR_WIDTH);
 
@@ -73,7 +72,7 @@ begin
     
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("test_general") then
+      if run("test_general") then --Lectura de archivos y estimación + ecualización
         wait for 2 * clk_period;
         rst <= '1';
         wait for 3 * clk_period;

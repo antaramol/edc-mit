@@ -8,15 +8,12 @@ entity contador is
     rst    : in  std_logic;
     clk    : in  std_logic;
     ena    : in  std_logic;
-    --rst_control : out std_logic;
     cuenta : out unsigned(N-1 downto 0)
   );
 end contador;
 
 architecture contador_arch of contador is
 
-  -- TYPE STATE_TYPE IS (reposo, contar);
-  -- SIGNAL estado, p_estado : STATE_TYPE;
 
   signal cont, p_cont : unsigned(N-1 downto 0);
 
@@ -25,12 +22,11 @@ begin
   comb: process (cont, ena)
   begin
     if (ena = '1') then
+      -- Cuenta hasta 11 y se resetea (12 posiciones)
       if (cont = to_unsigned(11,N)) then
         p_cont <= (others => '0');
-        --rst_control <= '1';
       else
         p_cont <= cont + 1;
-        --rst_control <= '0';
       end if;
     else
       p_cont <= cont;    

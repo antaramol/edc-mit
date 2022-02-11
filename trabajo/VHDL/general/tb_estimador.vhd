@@ -61,7 +61,7 @@ begin
   begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("test_alive") then
+      if run("test_alive") then --Leemos los datos de entrada y estimamos el canal
         wait for 2 * clk_period;
         rst <= '1';
         wait for 3 * clk_period;
@@ -101,13 +101,14 @@ begin
     running <= false;
     wait until fin = true;
 
-    deallocate(portadora_re);
+    deallocate(portadora_re); --Liberamos la memoria
     deallocate(portadora_im);
 
     test_runner_cleanup(runner);
 
   end process main;
 
+  --Escribimos las salidas
   printer: process
     -- Variable, internal to the process, where we will store the circuit
     -- outputs so they can be written to a .csv file

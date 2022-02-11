@@ -41,7 +41,7 @@ begin
   begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("1705_ciclos") then
+      if run("1705_ciclos") then -- Ciclos para modo 2k
         wait for 4 * clk_period;
         rst <= '1';
         wait for 4*clk_period;
@@ -53,7 +53,7 @@ begin
         ena <= '0';
         wait for 10*clk_period;
 
-      elsif run("arranque_stop")then
+      elsif run("arranque_stop")then --Prueba de enable y reset
         wait for 4 * clk_period;
         rst <= '1';
         wait for 4*clk_period;

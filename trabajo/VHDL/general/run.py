@@ -44,6 +44,7 @@ lib.set_sim_option("enable_coverage", True)
 lib.set_compile_option("enable_coverage", True)
 
 
+# Función llamada después de la ejecución de VHDL
 def post_func(results):
 
     results.merge_coverage(file_name="coverage_data")
@@ -53,6 +54,8 @@ def post_func(results):
         call(["genhtml", "coverage.info", "--output-directory", "coverage_report"])
 
         
+    # Mostramos datos y gráficas de interés
+    
     [H_est_vhdl, S_tx_vhdl, rx_constel, bits_rx_vhdl] = oc.resultados(CONSTEL, MODO, nout=4)
     BER = np.mean(np.logical_xor(bits_tx, np.transpose(bits_rx_vhdl)))
    

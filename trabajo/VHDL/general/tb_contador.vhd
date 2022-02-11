@@ -23,7 +23,6 @@ architecture bench of contador_tb is
   signal rst : std_logic := '0';
   signal clk : std_logic;
   signal ena : std_logic := '0';
-  -- signal rst_control : std_logic := '0';
   signal cuenta : unsigned(N-1 downto 0);
 
 begin
@@ -43,7 +42,7 @@ begin
   begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("cuenta_max") then
+      if run("cuenta_max") then --Hacemos que desborde
         wait for 4 * clk_period;
         rst <= '1';
 	    wait for 4*clk_period;
@@ -52,7 +51,7 @@ begin
 	    ena <= '1';
 	    wait for (2**N)*clk_period;
 
-      elsif run("arranque_stop") then
+      elsif run("arranque_stop") then --Probamos el enable y el reset
         wait for 4 * clk_period;
         rst <= '1';
         wait for 4*clk_period;

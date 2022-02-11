@@ -38,7 +38,6 @@ begin
   
   comb: process (estado)
     variable h, nuevo_inf : complex10;
-    variable i : unsigned(4 downto 0) := to_unsigned(0,5);
     begin
       en_PRBS <= '0';
      
@@ -55,8 +54,8 @@ begin
           sup.im <= to_signed(0,10);
         
         WHEN leer_primero =>
-          en_PRBS <= '1';
-          if(signo = '1') then
+          en_PRBS <= '1'; --Este enable se queda encendido en todos los estados menos el reset
+          if(signo = '1') then --En code coverage vemos que este signo siempre es 1
             sup.re <= -signed(data(DATA_WIDTH-1 downto DATA_WIDTH/2));
             sup.im <= -signed(data(DATA_WIDTH/2-1 downto 0));
           else
@@ -64,14 +63,13 @@ begin
             sup.im <= signed(data(DATA_WIDTH/2-1 downto 0));
           end if;
 
-          i := to_unsigned(12,5);
 
         WHEN espera_escritura =>
           en_PRBS <= '1';
 
         WHEN actualizar_salidas =>
           en_PRBS <= '1';
-
+          --Asignamos el sup al inf y leemos nuevo sup
           inf <= sup;
 
           if(signo = '1') then
@@ -83,12 +81,6 @@ begin
           end if;
 
           valido <= '1';
-
-          if(i = 0) then
-            i := to_unsigned(12,5);
-           else
-            i := to_unsigned(0,5);
-           end if;   
 
         WHEN esperar_interpol =>
         en_PRBS <= '1';
@@ -110,7 +102,7 @@ begin
     elsif rising_edge(clk) then
       CASE estado IS
         WHEN reposo =>
-          if (start_stop) then
+          if (start_stop) then --Ha llegado y_valid
             estado <= leer_primero;
           end if;
 
@@ -118,7 +110,7 @@ begin
           estado <= espera_escritura;
 
         WHEN espera_escritura => 
-          if (addr_cont = to_unsigned(11,ADDR_WIDTH)) then
+          if (addr_cont = to_unsigned(11,ADDR_WIDTH)) then --Esperamos al contador
             estado <= actualizar_salidas;
           end if;
 
@@ -126,9 +118,9 @@ begin
           estado <= esperar_interpol;
           
         WHEN esperar_interpol =>
-          if(not start_stop) AND (interpol_ok) then
+          if(not start_stop) AND (interpol_ok) then --Se ha terminado el símbolo
             estado <= ultima_port;
-          elsif (interpol_ok) then
+          elsif (interpol_ok) then --Nuevo piloto
             estado <=actualizar_salidas; 
           end if;
         

@@ -47,7 +47,7 @@ begin
   begin
     test_runner_setup(runner, runner_cfg);
     while test_suite loop
-      if run("general") then
+      if run("general") then --Prueba de interpolación de números sencillos
 
         wait for 10 * clk_period;
         rst <= '1';

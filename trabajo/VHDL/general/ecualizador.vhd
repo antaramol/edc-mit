@@ -37,17 +37,19 @@ architecture ecualizador_arch of ecualizador is
 
 begin
 
-    salida_valid <= H_valid;
+    salida_valid <= H_valid; --Es un bloque combinacional, la conectamos directamente
 
     a <= H_est.re;
     b <= H_est.im;
     c <= signed(reg(0)(19 downto 10));
     d <= signed(reg(0)(9 downto 0));
     
+    --Calculamos los dividendos y multiplicamos por 2^7 añadiendo 7 ceros a la derecha
     dividendo_re (26 downto 7) <= a*c + b*d;
     dividendo_im (26 downto 7) <= a*d - b*c;
 
-    divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im;
+    --Calculamos el divisor que es común
+    divisor (19 downto 0) <= H_est.re*H_est.re + H_est.im*H_est.im; 
 
     
     
@@ -58,6 +60,7 @@ begin
       if (H_valid = '1') then
 
         if (divisor = 0) then 
+          --A veces por la precisión algunos valores se hacen cero, hay que tratar estos extremos por separado
           
           if dividendo_im = to_signed(0,27) then 
             x_aux_im <= to_signed(0,27);
@@ -75,7 +78,7 @@ begin
             x_aux_re <= to_signed(511,27);
           end if;
           
-        else
+        else --Si tenemos una estimación válida y el divisor no es cero, hacemos la división
           x_aux_re <= dividendo_re / divisor;
           x_aux_im <= dividendo_im / divisor;
         end if;
@@ -87,6 +90,7 @@ begin
 
     end process;
 
+    --Asignamos los menos significativos, la división no va a salir un número mayor que 10 bits de precisión
     x_eq.re <= x_aux_re(9 downto 0);
     x_eq.im <= x_aux_im(9 downto 0);
     

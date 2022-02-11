@@ -48,7 +48,9 @@ begin
             p_i <= i + 1;
         end if;
 
-        if valid = '1' then
+        --Nueva implementación, ahora justo cuando llega el valid ponemos 
+        -- el piloto inferior directamente en la salida
+        if valid = '1' then 
             estim.re <= to_signed(3*to_integer(inf.re)/4,10);
             estim.im <= to_signed(3*to_integer(inf.im)/4,10);
             estim_valid <= '1';
@@ -57,6 +59,7 @@ begin
             estim.im <= estim_aux.im(13 downto 4);
         end if;
 
+        --Avisamos a la fsm un ciclo antes de terminar
         if i = 11 then
             interpol_ok <= '1';
         else
