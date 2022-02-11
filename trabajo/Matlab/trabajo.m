@@ -4,7 +4,7 @@ close all;
 %% Configuración del sistema OFDM
 NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
-CONSTEL = '16QAM';    % Constelación utilizada QPSK, 16AQM o 64QAM
+CONSTEL = '64QAM';    % Constelación utilizada QPSK, 16AQM o 64QAM
 MODO = '8K';        % 2K, 8K (la K en mayúscula)
 SNR=20;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
