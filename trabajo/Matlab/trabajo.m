@@ -5,7 +5,7 @@ close all;
 NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
 CONSTEL = '64QAM';    % Constelación utilizada QPSK, 16AQM o 64QAM
-MODO = '8K';        % 2K, 8K (la K en mayúscula)
+MODO = '2K';        % 2K, 8K (la K en mayúscula)
 SNR=20;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
 
@@ -241,18 +241,25 @@ H_est(PLOC,1) = ofdm_util_r(PLOC,1)./pilotos(PLOC,1);
 % Empleamos la función interp1 para interpolar los valores de los pilotos
 % Está realizando una interpolación lineal, pero añadiendo un parámetro es
 % inmediato realizar otro tipo de interpolación
-xq = 1:N_portadoras;
-H_est = interp1(PLOC,H_est(PLOC,1),xq).';
+% xq = 1:N_portadoras;
+% H_est_inter = interp1(PLOC,H_est(PLOC,1),xq).';
 
 % Implementación anterior de interpolación lineal de H_est
 % se ha desechado por ser menos eficiente
-% x = 1:12;
+x = 1:12;
+
+b=H_est(PLOC(1:end-1));
+a=(H_est(PLOC(2:end))-b)/12;
+y = a*x + b;
+H_est = [H_est(1); reshape(y.',N_portadoras-1,1)];
+
 % for n = 1:N_pilotos-1 % ceil(PLOC/12)
 %     b = H_est((n-1)*12+1);
 %     a = (H_est(12*n+1) - H_est((n-1)*12+1))/12;
 %     y = a*x + b;
 %     H_est((n-1)*12+2:12*n+1) = y;
 % end
+
 
 
 % Comparamos el módulo del canal real y el estimado en frecuencia
