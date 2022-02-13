@@ -6,7 +6,7 @@ NUM_SYMB = 10;       % Número de símbols a transmitir
 SEED=100;            % Semilla para el generador de números aleatorios
 CONSTEL = '64QAM';    % Constelación utilizada QPSK, 16AQM o 64QAM
 MODO = '2K';        % 2K, 8K (la K en mayúscula)
-SNR=20;             %SNR en dB
+SNR=200;             %SNR en dB
 CP = 1/32;          % Cyclic prefix
 
 tic
@@ -316,9 +316,12 @@ end
 
 % Cálculo de la BER viendo las diferencias entre los bits transmitidos y
 % los recibidos
+diferencia = mean(abs(H_real(ceil((NFFT-N_portadoras)/2+1):end-floor((NFFT-N_portadoras)/2))-H_est).^2);
 BER = mean(xor(bits_rx, bits_tx.'));
+
 fprintf(1,'CONSTEL = %s, SNR = %ddB, MODO = %s, CP = 1/%d\n',CONSTEL,SNR,MODO,1/CP);
 fprintf(1, 'BER = %f\n', BER);
+fprintf(1, 'mse estimación = %d\n', diferencia);
 
 
 toc
